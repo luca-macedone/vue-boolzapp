@@ -39,13 +39,83 @@
                     <!-- /.user-controls -->
                 </header>
                 <!-- /#left-header -->
-                <div class="notifications-check w-100 ms-bg-info d-flex align-items-center">
+                <div class="notifications-check w-100 ms-bg-info d-flex gap-2 align-items-center p-2">
                     <span class="rounded-circle p-2 bg-light">
-                        <i class="fa fa-bell-slash ms-text-info" aria-hidden="true"></i>
+                        <i class="fa fa-bell-slash ms-text-info m-1" aria-hidden="true"></i>
                     </span>
+                    <div class="d-flex flex-column">
+                        <span>Ricevi notifiche di nuovi messaggi</span>
+                        <small class="text-decoration-underline text-secondary">Attive notifiche desktop</small>
+                    </div>
                 </div>
                 <!-- /.notifications-check -->
-                <main id="left-main"></main>
+                <div class="search-bar p-2">
+                    <div class="input-group">
+                        <button class="btn border-0 bg-white">
+                            <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
+                        </button>
+                        <input class="form-control border-0 ms-text-sm" type="text" id="searchbar" placeholder="Cerca o inizia una nuova chat">
+                    </div>
+                </div>
+                <!-- /.search-bar -->
+                <main class="bg-white" id="left-main">
+                    <ul class="list-group chat-list">
+                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user">
+                            <img class="rounded-circle" src="./assets/img/avatar_1.jpg" width="60" height="60" alt="">
+                            <div class="d-flex flex-column ps-3 w-75" >
+                                <span>Michele</span>
+                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                            </div>
+                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                        </li> 
+                        <!-- /.chat-user -->
+                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user">
+                            <img class="rounded-circle" src="./assets/img/avatar_1.jpg" width="60" height="60" alt="">
+                            <div class="d-flex flex-column ps-3 w-75" >
+                                <span>Michele</span>
+                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                            </div>
+                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                        </li> 
+                        <!-- /.chat-user -->
+                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user">
+                            <img class="rounded-circle" src="./assets/img/avatar_1.jpg" width="60" height="60" alt="">
+                            <div class="d-flex flex-column ps-3 w-75" >
+                                <span>Michele</span>
+                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                            </div>
+                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                        </li> 
+                        <!-- /.chat-user -->
+                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user">
+                            <img class="rounded-circle" src="./assets/img/avatar_1.jpg" width="60" height="60" alt="">
+                            <div class="d-flex flex-column ps-3 w-75" >
+                                <span>Michele</span>
+                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                            </div>
+                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                        </li> 
+                        <!-- /.chat-user -->
+                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user">
+                            <img class="rounded-circle" src="./assets/img/avatar_1.jpg" width="60" height="60" alt="">
+                            <div class="d-flex flex-column ps-3 w-75" >
+                                <span>Michele</span>
+                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                            </div>
+                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                        </li> 
+                        <!-- /.chat-user -->
+                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user">
+                            <img class="rounded-circle" src="./assets/img/avatar_1.jpg" width="60" height="60" alt="">
+                            <div class="d-flex flex-column ps-3 w-75" >
+                                <span>Michele</span>
+                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                            </div>
+                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                        </li> 
+                        <!-- /.chat-user -->
+                    </ul>
+                </main>
                 <!-- /#left-main -->
             </div>
             <!-- /.col -->
@@ -55,7 +125,7 @@
                         <img class="img-fluid rounded-circle" src="./assets/img/avatar_1.jpg" height="60" width="60" alt="">
                         <div class="d-flex flex-column">
                             <span>Michele</span>
-                            <small class="ms-text-grey-dark">Ultimo accesso oggi alle 12:00</small>
+                            <small class="ms-text-grey-dark fw-light">Ultimo accesso oggi alle 12:00</small>
                         </div>
                     </div>
                     <!-- /.user -->

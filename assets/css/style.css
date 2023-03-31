@@ -36,6 +36,10 @@ body {
     color: var(--bz-info);
 }
 
+.ms-text-sm {
+    font-size: .8rem;
+}
+
 .ms-container {
     width: 100%;
     margin: auto;
@@ -48,7 +52,7 @@ body {
 }
 
 .ms-col {
-    height: 90vh;
+    height: 96vh;
 }
 
 .ms-w-40 {
@@ -60,11 +64,11 @@ body {
 }
 
 #app {
-    height: 90vh;
+    height: 96vh;
     width: 90%;
     max-width: 1320px;
     min-width: 768px;
-    margin: 5vh auto;
+    margin: 2vh auto;
 }
 
 #left-header,
@@ -78,13 +82,13 @@ body {
 }
 
 #left-main {
-    min-height: calc(90vh - 160px);
-    max-height: calc(90vh - 80px);
+    min-height: calc(96vh - 80px - 80px - 52px);
+    max-height: calc(96vh - 80px - 52px);
     overflow-y: scroll;
 }
 
 #right-main {
-    height: calc((90vh - 80px - 80px));
+    height: calc((96vh - 80px - 80px));
     overflow-y: scroll;
 }
 
@@ -103,4 +107,8 @@ body {
 
 .notifications-check {
     height: 80px;
+}
+
+.chat-list {
+    overflow: hidden;
 }
