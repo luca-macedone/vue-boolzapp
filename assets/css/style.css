@@ -72,6 +72,10 @@ body {
     width: 60% !important;
 }
 
+.activeChat {
+    background-color: var(--bz-grey-light) !important;
+}
+
 #app {
     height: 96vh;
     width: 90%;

@@ -59,8 +59,8 @@
                 </div>
                 <!-- /.search-bar -->
                 <main class="bg-white" id="left-main">
-                    <ul class="list-group chat-list">
-                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user" v-for="(chat_contact, index) in contacts" @click="changeActiveChat(index)">
+                    <ul class="list-group rounded-0 chat-list">
+                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user" :class="index === activeChat? 'activeChat':''"  v-for="(chat_contact, index) in contacts" @click="changeActiveChat(index)">
                             <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60" height="60" alt="">
                             <div class="d-flex flex-column ps-3 w-75" >
                                 <span>{{chat_contact.name}}</span>
@@ -79,9 +79,9 @@
             <div class="ms-col ms-w-60 ms-bg-chat">
                 <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
                     <div v-if="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
-                        <img class="img-fluid rounded-circle" src="./assets/img/avatar_1.jpg" height="60" width="60" alt="">
+                        <img class="img-fluid rounded-circle" :src="`./assets/img/.${contacts[activeChat].avatar}`" height="60" width="60" alt="">
                         <div class="d-flex flex-column">
-                            <span>Michele</span>
+                            <span>{{contacts[activeChat].name}}</span>
                             <small class="ms-text-grey-dark fw-light">Ultimo accesso oggi alle 12:00</small>
                         </div>
                     </div>
@@ -103,11 +103,11 @@
                             </div>
                         </li>
                     </ul>
-                    <div v-else :class="activeChat !== -1? 'd-none' : 'd-block'">
-                        <div class="card ms-bg-chat ms-text-grey-dark border-0 w-75 m-auto">
+                    <div v-if="activeChat === -1" :class="activeChat !== -1? 'd-none' : 'd-block'">
+                        <div class="card ms-bg-chat ms-text-grey-dark border-0 w-50 m-auto">
                           <div class="card-body">
                             <h5 class="card-title">Choose someone to talk with</h5>
-                            <p class="card-text">Search someone on the left panel to talk width</p>
+                            <small class="card-text">Search someone on the left panel to talk width</small>
                           </div>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                 <!-- /#right-main -->
                 <footer v-if="activeChat !== -1" class="d-flex justify-content-between align-items-center" id="right-footer">
                     <i class="fa-regular fa-smile mx-4 ms-text-grey-darker"></i>
-                    <input class="form-control border-0 ms-text-sm py-3 ms-text-grey-darker" type="text" placeholder="Scrivi un messaggio" id="message-input">
+                    <input class="form-control border-0 ms-text-sm py-3 ms-text-grey-darker" type="text" placeholder="Scrivi un messaggio" id="message-input" v-model="newMessage" @keyup.enter="addNewMessage()">
                     <i class="fa fa-microphone mx-4 ms-text-grey-darker"></i>
                 </footer>
                 <!-- /#right-footer -->
