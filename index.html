@@ -60,7 +60,7 @@
                 <!-- /.search-bar -->
                 <main class="bg-white" id="left-main">
                     <ul class="list-group chat-list">
-                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user" v-for="(chat_contact, index) in contacts">
+                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user" v-for="(chat_contact, index) in contacts" @click="changeActiveChat(index)">
                             <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60" height="60" alt="">
                             <div class="d-flex flex-column ps-3 w-75" >
                                 <span>{{chat_contact.name}}</span>
@@ -78,7 +78,7 @@
             <!-- /.col -->
             <div class="ms-col ms-w-60 ms-bg-chat">
                 <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
-                    <div class="user h-100 d-flex align-items-center gap-2">
+                    <div v-if="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
                         <img class="img-fluid rounded-circle" src="./assets/img/avatar_1.jpg" height="60" width="60" alt="">
                         <div class="d-flex flex-column">
                             <span>Michele</span>
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <!-- /.user -->
-                    <div class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
+                    <div v-if="activeChat !== -1" class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
                         <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
                         <i class="fa-solid fa-paperclip ms-text-grey-dark"></i>
                         <i class="fa fa-ellipsis-v ms-text-grey-dark"></i>
@@ -96,29 +96,24 @@
                 <!-- /#right-header -->
                 <main id="right-main">
                     <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5">
-                        <li class="w-100">
-                            <div class=" ms-w-46 rounded p-3 message float-end position-relative">
-                                Hai portato a spasso il cane?
+                        <li v-if="activeChat !== -1" class="w-100" v-for="message in contacts[activeChat].messages">
+                            <div class=" ms-w-46 rounded p-3 message position-relative" :class="message.status === 'sent'? 'float-end':'float-start'">
+                                {{message.message}}
                                 <div class="ms-text-sm ms-text-grey-darker hour">15:30</div>
                             </div>
                         </li>
-                        <li class="w-100">
-                            <div class=" ms-w-46 rounded p-3 message float-end position-relative">
-                                Ricordati di stendere i panni!
-                                <div class="ms-text-sm ms-text-grey-darker hour">15:50</div>
-                            </div>
-                        </li>
-                        <li class="w-100">
-                            <div class=" ms-w-46 rounded p-3 message float-start position-relative">
-                                Tutto fatto!
-                                <div class="ms-text-sm ms-text-grey-darker hour">16:15</div>
-                            </div>
-                        </li>
-                        
                     </ul>
+                    <div v-else :class="activeChat !== -1? 'd-none' : 'd-block'">
+                        <div class="card ms-bg-chat ms-text-grey-dark border-0 w-75 m-auto">
+                          <div class="card-body">
+                            <h5 class="card-title">Choose someone to talk with</h5>
+                            <p class="card-text">Search someone on the left panel to talk width</p>
+                          </div>
+                        </div>
+                    </div>
                 </main>
                 <!-- /#right-main -->
-                <footer class="d-flex justify-content-between align-items-center" id="right-footer">
+                <footer v-if="activeChat !== -1" class="d-flex justify-content-between align-items-center" id="right-footer">
                     <i class="fa-regular fa-smile mx-4 ms-text-grey-darker"></i>
                     <input class="form-control border-0 ms-text-sm py-3 ms-text-grey-darker" type="text" placeholder="Scrivi un messaggio" id="message-input">
                     <i class="fa fa-microphone mx-4 ms-text-grey-darker"></i>

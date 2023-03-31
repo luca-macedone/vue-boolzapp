@@ -3,6 +3,7 @@ const { createApp } = Vue
 createApp({
     data() {
         return {
+            activeChat: -1,
             contacts: [
                 {
                     name: 'Michele',
@@ -167,5 +168,10 @@ createApp({
                 }
             ],
         }
-    }
+    },
+    methods: {
+        changeActiveChat(position){
+            this.activeChat = position;
+        }
+    },
 }).mount('#app')
