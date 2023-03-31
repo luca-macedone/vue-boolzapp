@@ -3,6 +3,7 @@
     --bz-back-secondary: #dbdad0;
     --bz-grey-light: #e9eaea;
     --bz-grey-dark: #b1b0b0;
+    --bz-grey-darker: #687377;
     --bz-primary: #cdfbb3;
     --bz-info: #74dcfe;
     --bz-bg-chat: #f4efe8;
@@ -32,6 +33,10 @@ body {
     color: var(--bz-grey-dark);
 }
 
+.ms-text-grey-darker {
+    color: var(--bz-grey-darker);
+}
+
 .ms-text-info {
     color: var(--bz-info);
 }
@@ -59,6 +64,10 @@ body {
     width: 40% !important;
 }
 
+.ms-w-46 {
+    width: 46% !important;
+}
+
 .ms-w-60 {
     width: 60% !important;
 }
@@ -82,14 +91,14 @@ body {
 }
 
 #left-main {
-    min-height: calc(96vh - 80px - 80px - 52px);
+    height: calc(96vh - 80px - 80px - 52px );
     max-height: calc(96vh - 80px - 52px);
-    overflow-y: scroll;
 }
 
 #right-main {
     height: calc((96vh - 80px - 80px));
     overflow-y: scroll;
+    background-image: url('./../img/mine.jpg');
 }
 
 .user {
@@ -110,5 +119,21 @@ body {
 }
 
 .chat-list {
-    overflow: hidden;
+    max-height: 100%;
+    overflow-y: scroll;
+}
+
+.message.float-start {
+    background-color: white;
+}
+
+.message.float-end {
+    background-color: var(--bz-primary);
+}
+
+.hour {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: .25rem .35rem;
 }

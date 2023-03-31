@@ -115,6 +115,7 @@
                         </li> 
                         <!-- /.chat-user -->
                     </ul>
+                    <!-- /.chat-list -->
                 </main>
                 <!-- /#left-main -->
             </div>
@@ -137,9 +138,35 @@
                     <!-- /.user-controls -->
                 </header>
                 <!-- /#right-header -->
-                <main id="right-main"></main>
+                <main id="right-main">
+                    <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5">
+                        <li class="w-100">
+                            <div class=" ms-w-46 rounded p-3 message float-end position-relative">
+                                Hai portato a spasso il cane?
+                                <div class="ms-text-sm ms-text-grey-darker hour">15:30</div>
+                            </div>
+                        </li>
+                        <li class="w-100">
+                            <div class=" ms-w-46 rounded p-3 message float-end position-relative">
+                                Ricordati di stendere i panni!
+                                <div class="ms-text-sm ms-text-grey-darker hour">15:50</div>
+                            </div>
+                        </li>
+                        <li class="w-100">
+                            <div class=" ms-w-46 rounded p-3 message float-start position-relative">
+                                Tutto fatto!
+                                <div class="ms-text-sm ms-text-grey-darker hour">16:15</div>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </main>
                 <!-- /#right-main -->
-                <footer id="right-footer"></footer>
+                <footer class="d-flex justify-content-between align-items-center" id="right-footer">
+                    <i class="fa-regular fa-smile mx-4 ms-text-grey-darker"></i>
+                    <input class="form-control border-0 ms-text-sm py-3 ms-text-grey-darker" type="text" placeholder="Scrivi un messaggio" id="message-input">
+                    <i class="fa fa-microphone mx-4 ms-text-grey-darker"></i>
+                </footer>
                 <!-- /#right-footer -->
             </div>
             <!-- /.col -->
