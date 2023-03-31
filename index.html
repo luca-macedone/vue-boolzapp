@@ -24,15 +24,48 @@
 <body class="bg-dual">
     <div class="ms-container bg-light" id="app">
         <div class="ms-row">
-            <div class="ms-col ms-w-40">
-                <header id="left-header"></header>
+            <div class="ms-col ms-w-40 border-end">
+                <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="left-header">
+                    <div class="user h-100 d-flex align-items-center gap-2">
+                        <img class="img-fluid rounded-circle" src="./assets/img/avatar_io.jpg" height="60" width="60" alt="">
+                        <span>Sofia</span>
+                    </div>
+                    <!-- /.user -->
+                    <div class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
+                        <i class="fa-solid fa-circle-notch ms-text-grey-dark"></i>
+                        <i class="fa-solid fa-message ms-text-grey-dark"></i>
+                        <i class="fa fa-ellipsis-v ms-text-grey-dark"></i>
+                    </div>
+                    <!-- /.user-controls -->
+                </header>
                 <!-- /#left-header -->
+                <div class="notifications-check w-100 ms-bg-info d-flex align-items-center">
+                    <span class="rounded-circle p-2 bg-light">
+                        <i class="fa fa-bell-slash ms-text-info" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <!-- /.notifications-check -->
                 <main id="left-main"></main>
                 <!-- /#left-main -->
             </div>
             <!-- /.col -->
             <div class="ms-col ms-w-60 ms-bg-chat">
-                <header id="right-header"></header>
+                <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
+                    <div class="user h-100 d-flex align-items-center gap-2">
+                        <img class="img-fluid rounded-circle" src="./assets/img/avatar_1.jpg" height="60" width="60" alt="">
+                        <div class="d-flex flex-column">
+                            <span>Michele</span>
+                            <small class="ms-text-grey-dark">Ultimo accesso oggi alle 12:00</small>
+                        </div>
+                    </div>
+                    <!-- /.user -->
+                    <div class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
+                        <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
+                        <i class="fa-solid fa-paperclip ms-text-grey-dark"></i>
+                        <i class="fa fa-ellipsis-v ms-text-grey-dark"></i>
+                    </div>
+                    <!-- /.user-controls -->
+                </header>
                 <!-- /#right-header -->
                 <main id="right-main"></main>
                 <!-- /#right-main -->

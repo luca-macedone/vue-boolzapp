@@ -2,7 +2,8 @@
     --bz-back-primary: #009889;
     --bz-back-secondary: #dbdad0;
     --bz-grey-light: #e9eaea;
-    --bz-grey-dark: #b1b0b0 --bz-primary: #cdfbb3;
+    --bz-grey-dark: #b1b0b0;
+    --bz-primary: #cdfbb3;
     --bz-info: #74dcfe;
     --bz-bg-chat: #f4efe8;
 }
@@ -17,6 +18,22 @@ body {
 
 .ms-bg-chat {
     background-color: var(--bz-bg-chat);
+}
+
+.ms-bg-grey-light {
+    background-color: var(--bz-grey-light);
+}
+
+.ms-bg-info {
+    background-color: var(--bz-info);
+}
+
+.ms-text-grey-dark {
+    color: var(--bz-grey-dark);
+}
+
+.ms-text-info {
+    color: var(--bz-info);
 }
 
 .ms-container {
@@ -48,4 +65,42 @@ body {
     max-width: 1320px;
     min-width: 768px;
     margin: 5vh auto;
+}
+
+#left-header,
+#right-header
+{
+    height: 80px;
+}
+
+#right-footer {
+    height: 80px;
+}
+
+#left-main {
+    min-height: calc(90vh - 160px);
+    max-height: calc(90vh - 80px);
+    overflow-y: scroll;
+}
+
+#right-main {
+    height: calc((90vh - 80px - 80px));
+    overflow-y: scroll;
+}
+
+.user {
+    width: 70%;
+}
+
+.user-controls {
+    width: 30%;
+}
+
+.user-controls i {
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.notifications-check {
+    height: 80px;
 }
