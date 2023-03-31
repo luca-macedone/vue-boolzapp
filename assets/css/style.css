@@ -1,0 +1,51 @@
+:root {
+    --bz-back-primary: #009889;
+    --bz-back-secondary: #dbdad0;
+    --bz-grey-light: #e9eaea;
+    --bz-grey-dark: #b1b0b0 --bz-primary: #cdfbb3;
+    --bz-info: #74dcfe;
+    --bz-bg-chat: #f4efe8;
+}
+
+body {
+    max-height: 100vh;
+}
+
+.bg-dual {
+    background: linear-gradient(to bottom, var(--bz-back-primary) 10%, var(--bz-back-secondary) 10%) no-repeat;
+}
+
+.ms-bg-chat {
+    background-color: var(--bz-bg-chat);
+}
+
+.ms-container {
+    width: 100%;
+    margin: auto;
+}
+
+.ms-row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ms-col {
+    height: 90vh;
+}
+
+.ms-w-40 {
+    width: 40% !important;
+}
+
+.ms-w-60 {
+    width: 60% !important;
+}
+
+#app {
+    height: 90vh;
+    width: 90%;
+    max-width: 1320px;
+    min-width: 768px;
+    margin: 5vh auto;
+}
