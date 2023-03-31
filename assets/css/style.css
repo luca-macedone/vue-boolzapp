@@ -13,6 +13,10 @@ body {
     max-height: 100vh;
 }
 
+input[type="text"]:focus {
+    box-shadow: none;
+}
+
 .bg-dual {
     background: linear-gradient(to bottom, var(--bz-back-primary) 10%, var(--bz-back-secondary) 10%) no-repeat;
 }

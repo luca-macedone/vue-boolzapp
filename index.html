@@ -60,7 +60,7 @@
                 <!-- /.search-bar -->
                 <main class="bg-white" id="left-main">
                     <ul class="list-group rounded-0 chat-list">
-                        <li class="list-group-item list-group-item-action border-start-0 border-end-0 rounded-0 d-flex justify-content-between align-items-start chat-user" :class="index === activeChat? 'activeChat':''"  v-for="(chat_contact, index) in contacts" @click="changeActiveChat(index)">
+                        <li class="list-group-item list-group-item-action border-0 border-bottom rounded-0 d-flex justify-content-between align-items-start chat-user" :class="index === activeChat? 'activeChat':''"  v-for="(chat_contact, index) in contacts" @click="changeActiveChat(index)">
                             <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60" height="60" alt="">
                             <div class="d-flex flex-column ps-3 w-75" >
                                 <span>{{chat_contact.name}}</span>

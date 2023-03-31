@@ -108,7 +108,7 @@ createApp({
                 },
                 {
                     name: 'Claudia',
-                    avatar: './img/avatar_5.jpg',
+                    avatar: './img/avatar_6.jpg',
                     visible: true,
                     messages: [
                         {
@@ -183,7 +183,7 @@ createApp({
             messageToInsert.message = this.newMessage;
             this.contacts[this.activeChat].messages.push(messageToInsert);
             this.newMessage = '';
-            setTimeout(this.addResponseMessage(), 3000)
+            setTimeout(this.addResponseMessage, 1000)
         },
         addResponseMessage(){
             const responseMessage = {
