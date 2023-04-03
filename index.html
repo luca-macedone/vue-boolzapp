@@ -54,13 +54,13 @@
                         <button class="btn border-0 bg-white">
                             <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
                         </button>
-                        <input class="form-control border-0 ms-text-sm" type="text" id="searchbar" placeholder="Cerca o inizia una nuova chat">
+                        <input class="form-control border-0 ms-text-sm" type="text" id="searchbar" placeholder="Cerca o inizia una nuova chat" v-model="filterValue">
                     </div>
                 </div>
                 <!-- /.search-bar -->
                 <main class="bg-white" id="left-main">
                     <ul class="list-group rounded-0 chat-list">
-                        <li class="list-group-item list-group-item-action border-0 border-bottom rounded-0 d-flex justify-content-between align-items-start chat-user" :class="index === activeChat? 'activeChat':''"  v-for="(chat_contact, index) in contacts" @click="changeActiveChat(index)">
+                        <li v-if="filteredContacts.length == 0" class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user" :class="index === activeChat? 'activeChat':''"  v-for="(chat_contact, index) in contacts" @click="changeActiveChat(index)">
                             <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60" height="60" alt="">
                             <div class="d-flex flex-column ps-3 w-75" >
                                 <span>{{chat_contact.name}}</span>
@@ -68,8 +68,16 @@
                             </div>
                             <span class="ms-text-sm ms-text-grey-dark">12:00</span>
                         </li> 
-                        <!-- /.chat-user -->
-                        
+                        <!-- /.chat-user not-filtered -->
+                        <li v-else class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user" :class="index === activeChat? 'activeChat':''"  v-for="(chat_contact, index) in filteredContacts" @click="changeActiveChat(index)">
+                            <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60" height="60" alt="">
+                            <div class="d-flex flex-column ps-3 w-75" >
+                                <span>{{chat_contact.name}}</span>
+                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                            </div>
+                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                        </li> 
+                        <!-- /.chat-user filtered-->
                     </ul>
                     <!-- /.chat-list -->
                 </main>
@@ -107,13 +115,13 @@
                         <div class="card ms-bg-chat ms-text-grey-dark border-0 w-50 m-auto">
                           <div class="card-body">
                             <h5 class="card-title">Choose someone to talk with</h5>
-                            <small class="card-text">Search someone on the left panel to talk width</small>
+                            <small class="card-text">Search someone on the left panel to talk with</small>
                           </div>
                         </div>
                     </div>
                 </main>
                 <!-- /#right-main -->
-                <footer v-if="activeChat !== -1" class="d-flex justify-content-between align-items-center" id="right-footer">
+                <footer  :class="activeChat !== -1? '': 'd-none'" class="d-flex justify-content-between align-items-center" id="right-footer">
                     <i class="fa-regular fa-smile mx-4 ms-text-grey-darker"></i>
                     <input class="form-control border-0 ms-text-sm py-3 ms-text-grey-darker" type="text" placeholder="Scrivi un messaggio" id="message-input" v-model="newMessage" @keyup.enter="addNewMessage()">
                     <i class="fa fa-microphone mx-4 ms-text-grey-darker"></i>

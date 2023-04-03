@@ -5,6 +5,7 @@ createApp({
         return {
             activeChat: -1,
             newMessage: '',
+            filterValue: '',
             contacts: [
                 {
                     name: 'Michele',
@@ -168,13 +169,18 @@ createApp({
                     ],
                 }
             ],
+            filteredContacts: [],
         }
     },
     methods: {
-        changeActiveChat(position){
+        /**
+         * 
+         * @param {Number} position 
+         */
+        changeActiveChat(position) {
             this.activeChat = position;
         },
-        addNewMessage(){
+        addNewMessage() {
             const messageToInsert = {
                 date: '10/01/2020 15:30:55',
                 message: '',
@@ -185,16 +191,37 @@ createApp({
             this.newMessage = '';
             setTimeout(this.addResponseMessage, 1000)
         },
-        addResponseMessage(){
+        addResponseMessage() {
             const responseMessage = {
                 date: '10/01/2020 15:30:55',
                 message: 'Ok',
                 status: 'received',
             }
             this.contacts[this.activeChat].messages.push(responseMessage);
-        }
+        },
+        /**
+         * 
+         * @param {String} string 
+         * @returns 
+         */
+        normalizeString(string) {
+            let newString;
+            if(string.length > 1){
+                newString = (string[0].toUpperCase() + string.substring(1).toLowerCase());
+                // console.log(newString)
+            } else {
+                newString = string.toUpperCase();
+            }
+            return newString
+        },
     },
     mounted() {
-        
+
+    },
+    computed: {
+        filterContacts() {
+            let filter = this.normalizeString(this.filterValue);
+            this.filteredContacts = this.contacts.filter(contact => contact.name.includes(filter));
+        },
     },
 }).mount('#app')
