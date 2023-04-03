@@ -171,6 +171,21 @@ createApp({
                     ],
                 }
             ],
+            defaultMessages: [
+                'Ci sono due cose che non tornano mai indietro: una freccia scagliata e un\'occasione perduta',
+                'Il tempo non puoi fermarlo, puoi solo viverlo',
+                'Nascondi un difetto, e il mondo immaginerà il peggio',
+                'Non ho mai conosciuto un uomo che vedendo i propri errori ne sapesse dar colpa a se stesso',
+                'È molto difficile parlare di responsabilità a meno che tu non l\'abbia esercitata da te stesso',
+                'Un barista è soltanto un farmacista con un inventario limitato',
+                'Un astemio è uno che soffre per la sete invece che godersela',
+                'Non è prendendo in giro la vita che si ottiene la felicità. È solo attraverso la rinunciaspontanea e la rassegnazione alla perdita che ci prepariamo alla morte e che otteniamo un minimo di felicità',
+                'Il poterepolitico o economico o burocratico accresce il potenziale nocivo di una personastupida',
+                'Un adulto è un bambino che non sa più cosa vuole',
+                'Solo gli spiriti accomodanti non sono mai cinici',
+                'Chi è saggio non parla mai di ciò che non può tramutare in azione',
+                'I bambini sono l\'unica forma di immortalità della quale possiamo essere sicuri',
+            ],
             filteredContacts: [],
         }
     },
@@ -207,7 +222,7 @@ createApp({
         addResponseMessage() {
             const responseMessage = {
                 date: this.newMessageHour(),
-                message: 'Ok',
+                message: this.getRandomResponse(),
                 status: 'received',
             }
             this.contacts[this.activeChat].messages.push(responseMessage);
@@ -275,8 +290,23 @@ createApp({
          */
         latestMessageHour(index) {
             return this.setHour(this.contacts[index].messages[this.contacts[index].messages.length - 1].date)
+        },
+        /**
+         * 
+         * @param {Number} min 
+         * @param {Number} max 
+         * @returns 
+         */
+        getRandom(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1) + min); 
+        },
+        getRandomResponse(){
+            if(this.defaultMessages.length > 0){
+                return this.defaultMessages[this.getRandom(0, this.defaultMessages.length-1)];
+            }else return 'Ok';
         }
-
     },
     computed: {
         /**
