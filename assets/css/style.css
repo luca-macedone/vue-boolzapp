@@ -89,8 +89,7 @@ input[type="text"]:focus {
 }
 
 #left-header,
-#right-header
-{
+#right-header {
     height: 80px;
 }
 
@@ -99,7 +98,7 @@ input[type="text"]:focus {
 }
 
 #left-main {
-    height: calc(96vh - 80px - 80px - 52px );
+    height: calc(96vh - 80px - 80px - 52px);
     max-height: calc(96vh - 80px - 52px);
 }
 
@@ -140,8 +139,7 @@ input[type="text"]:focus {
 }
 
 .hour,
-.message-menu 
-{
+.message-menu {
     position: absolute;
     right: 0;
     margin: .25rem .35rem;
@@ -156,5 +154,5 @@ input[type="text"]:focus {
 }
 
 .message-menu li span:hover {
-    background-color: transparent ;
+    background-color: transparent;
 }

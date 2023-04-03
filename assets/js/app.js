@@ -176,25 +176,35 @@ createApp({
     },
     methods: {
         /**
-         * 
+         * ## Change Active Chat
+         * Given a index, it changes the active chat index with it
          * @param {Number} position 
          */
         changeActiveChat(position) {
             this.activeChat = position;
         },
+        /**
+         * ## Add New Message
+         * on Trigger, it creates a new message object and adds it inside the array
+         */
         addNewMessage() {
-            const messageToInsert = {
-                date: this.newMessageHour(),
-                message: '',
-                status: 'sent',
+            if (this.newMessage !== '' && this.newMessage !== ' ') {
+                const messageToInsert = {
+                    date: this.newMessageHour(),
+                    message: '',
+                    status: 'sent',
+                }
+                messageToInsert.message = this.newMessage;
+                this.contacts[this.activeChat].messages.push(messageToInsert);
+                this.newMessage = '';
+                setTimeout(this.addResponseMessage, 1000)
             }
-            messageToInsert.message = this.newMessage;
-            this.contacts[this.activeChat].messages.push(messageToInsert);
-            this.newMessage = '';
-            setTimeout(this.addResponseMessage, 1000)
         },
+        /**
+         * ## Add Response Message
+         * its triggered after the activatation of addNewMessage, its creates a message of response to the message submitted frome the client
+         */
         addResponseMessage() {
-            
             const responseMessage = {
                 date: this.newMessageHour(),
                 message: 'Ok',
@@ -203,13 +213,14 @@ createApp({
             this.contacts[this.activeChat].messages.push(responseMessage);
         },
         /**
-         * 
+         * ## Normalize a String
+         * given a string its will be returned the first letter uppercase and all the other letters in lowercase format
          * @param {String} string 
          * @returns 
          */
         normalizeString(string) {
             let newString;
-            if(string.length > 1){
+            if (string.length > 1) {
                 newString = (string[0].toUpperCase() + string.substring(1).toLowerCase());
                 // console.log(newString)
             } else {
@@ -217,29 +228,61 @@ createApp({
             }
             return newString;
         },
-        deleteMessage(messageToDelete){
+        /**
+         * ## Delete a Message
+         * Given the index of the message to remove, it will splice out the element from the array
+         * @param {Number} messageToDelete 
+         */
+        deleteMessage(messageToDelete) {
             // console.log(messageToDelete);
             // console.log(this.contacts[this.activeChat].messages[messageToDelete])
-            this.contacts[this.activeChat].messages.splice(messageToDelete,1)
+            this.contacts[this.activeChat].messages.splice(messageToDelete, 1)
             // console.log(this.contacts[this.activeChat].messages)
         },
-        setHour(date){
+        /**
+         * ## Set Hour
+         * Given a string with a date, it will return the hour included with a specific format
+         * @param {String} date 
+         * @returns 
+         */
+        setHour(date) {
             dateObj = DateTime.fromFormat(date, 'dd/MM/yyyy HH:mm:ss');
-            return dateObj.toLocaleString({hour: 'numeric', minute:'2-digit'})
+            return dateObj.toLocaleString({ hour: 'numeric', minute: '2-digit' })
         },
-        newMessageHour(){
+        /**
+         * ## New Message Hour
+         * it return the actual hour for the new message object
+         * @returns 
+         */
+        newMessageHour() {
             const now = DateTime.now();
             return now.toFormat('dd/MM/yyyy HH:mm:ss');
         },
-        latestMessage(index){
+        /**
+         * ## Latest Message
+         * Given the index of the message, it finds the latest message sended/received and returns it
+         * @param {Number} index 
+         * @returns 
+         */
+        latestMessage(index) {
             return this.contacts[index].messages[this.contacts[index].messages.length - 1].message;
         },
-        latestMessageHour(index){
+        /**
+         * ## Latest Message Hour
+         * Given the index of the message, it finds the latest message sended/received an returns the hour of send/receive
+         * @param {Number} index 
+         * @returns 
+         */
+        latestMessageHour(index) {
             return this.setHour(this.contacts[index].messages[this.contacts[index].messages.length - 1].date)
         }
-        
+
     },
     computed: {
+        /**
+         * ## Filter Contacts
+         * It will take the value of filterValue and use it to filter the contacts array
+         */
         filterContacts() {
             let filter = this.normalizeString(this.filterValue);
             this.filteredContacts = this.contacts.filter(contact => contact.name.includes(filter));
