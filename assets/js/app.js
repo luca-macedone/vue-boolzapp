@@ -3,7 +3,7 @@ const { createApp } = Vue
 createApp({
     data() {
         return {
-            activeChat: -1,
+            activeChat: 0,
             newMessage: '',
             filterValue: '',
             contacts: [
@@ -212,11 +212,14 @@ createApp({
             } else {
                 newString = string.toUpperCase();
             }
-            return newString
+            return newString;
         },
-    },
-    mounted() {
-
+        deleteMessage(messageToDelete){
+            // console.log(messageToDelete);
+            // console.log(this.contacts[this.activeChat].messages[messageToDelete])
+            this.contacts[this.activeChat].messages.splice(messageToDelete,1)
+            // console.log(this.contacts[this.activeChat].messages)
+        },
     },
     computed: {
         filterContacts() {
