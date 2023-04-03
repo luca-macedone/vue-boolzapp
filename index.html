@@ -55,6 +55,9 @@
                             <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
                         </button>
                         <input class="form-control border-0 ms-text-sm" type="text" id="searchbar" placeholder="Cerca o inizia una nuova chat" v-model="filterValue">
+                        <button :class="filterValue !== ''? '' : 'd-none'" class="btn bg-white text-danger" @click="filterValue = ''">
+                            <i class="fa-solid fa-x"></i>
+                        </button>
                     </div>
                 </div>
                 <!-- /.search-bar -->
