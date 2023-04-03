@@ -104,7 +104,7 @@ input[type="text"]:focus {
 
 #right-main {
     height: calc((96vh - 80px - 80px));
-    overflow-y: scroll;
+    overflow-y: auto;
     background-image: url('./../img/mine.jpg');
 }
 
@@ -127,7 +127,7 @@ input[type="text"]:focus {
 
 .chat-list {
     max-height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .message.float-start {

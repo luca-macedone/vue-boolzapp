@@ -8,6 +8,7 @@ createApp({
             activeChat: 0,
             newMessage: '',
             filterValue: '',
+            contactStatus: '',
             contacts: [
                 {
                     name: 'Michele',
@@ -212,7 +213,10 @@ createApp({
                 messageToInsert.message = this.newMessage;
                 this.contacts[this.activeChat].messages.push(messageToInsert);
                 this.newMessage = '';
-                setTimeout(this.addResponseMessage, 1000)
+                setTimeout(this.addResponseMessage, 1000);
+                setTimeout(this.activeStatus, 1000);
+                setTimeout(this.defaultStatus, 3000);
+                this.writingStatus();
             }
         },
         /**
@@ -291,6 +295,15 @@ createApp({
         latestMessageHour(index) {
             return this.setHour(this.contacts[index].messages[this.contacts[index].messages.length - 1].date)
         },
+        activeStatus(){
+            this.contactStatus = 'Online';
+        },
+        writingStatus(){
+            this.contactStatus = 'Sta Scrivendo...';
+        },
+        defaultStatus(){
+            this.contactStatus = `Ultimo accesso oggi alle ${this.latestMessageHour(this.activeChat)}`;
+        },
         /**
          * 
          * @param {Number} min 
@@ -307,6 +320,9 @@ createApp({
                 return this.defaultMessages[this.getRandom(0, this.defaultMessages.length-1)];
             }else return 'Ok';
         }
+    },
+    mounted() {
+        this.defaultStatus();
     },
     computed: {
         /**
