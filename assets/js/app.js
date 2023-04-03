@@ -1,5 +1,7 @@
 const { createApp } = Vue
 
+const DateTime = luxon.DateTime;
+
 createApp({
     data() {
         return {
@@ -182,7 +184,7 @@ createApp({
         },
         addNewMessage() {
             const messageToInsert = {
-                date: '10/01/2020 15:30:55',
+                date: this.newMessageHour(),
                 message: '',
                 status: 'sent',
             }
@@ -192,8 +194,9 @@ createApp({
             setTimeout(this.addResponseMessage, 1000)
         },
         addResponseMessage() {
+            
             const responseMessage = {
-                date: '10/01/2020 15:30:55',
+                date: this.newMessageHour(),
                 message: 'Ok',
                 status: 'received',
             }
@@ -220,6 +223,21 @@ createApp({
             this.contacts[this.activeChat].messages.splice(messageToDelete,1)
             // console.log(this.contacts[this.activeChat].messages)
         },
+        setHour(date){
+            dateObj = DateTime.fromFormat(date, 'dd/MM/yyyy HH:mm:ss');
+            return dateObj.toLocaleString({hour: 'numeric', minute:'2-digit'})
+        },
+        newMessageHour(){
+            const now = DateTime.now();
+            return now.toFormat('dd/MM/yyyy HH:mm:ss');
+        },
+        latestMessage(index){
+            return this.contacts[index].messages[this.contacts[index].messages.length - 1].message;
+        },
+        latestMessageHour(index){
+            return this.setHour(this.contacts[index].messages[this.contacts[index].messages.length - 1].date)
+        }
+        
     },
     computed: {
         filterContacts() {

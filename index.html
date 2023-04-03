@@ -74,9 +74,9 @@
                                 height="60" alt="">
                             <div class="d-flex flex-column ps-3 w-75">
                                 <span>{{chat_contact.name}}</span>
-                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                                <small class="ms-text-grey-dark">{{latestMessage(index)}}</small>
                             </div>
-                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                            <span class="ms-text-sm ms-text-grey-dark">{{latestMessageHour(index)}}</span>
                         </li>
                         <!-- /.chat-user not-filtered -->
                         <li v-else
@@ -87,9 +87,9 @@
                                 height="60" alt="">
                             <div class="d-flex flex-column ps-3 w-75">
                                 <span>{{chat_contact.name}}</span>
-                                <small class="ms-text-grey-dark">Ultimo messaggio inviato</small>
+                                <small class="ms-text-grey-dark">{{latestMessage(index)}}</small>
                             </div>
-                            <span class="ms-text-sm ms-text-grey-dark">12:00</span>
+                            <span class="ms-text-sm ms-text-grey-dark">{{latestMessageHour(index)}}</span>
                         </li>
                         <!-- /.chat-user filtered-->
                     </ul>
@@ -135,7 +135,7 @@
                                     </ul>
                                 </div>
                                 {{message.message}}
-                                <div class="ms-text-sm ms-text-grey-darker hour">15:30</div>
+                                <div class="ms-text-sm ms-text-grey-darker hour">{{setHour(message.date)}}</div>
                             </div>
                         </li>
                     </ul>
@@ -165,7 +165,11 @@
     </div>
     <!-- /#app -->
 
+    <!-- Luxon CDN Lib -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
+    <!-- Vue CDN Global -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- My script -->
     <script src="./assets/js/app.js"></script>
 </body>
 
