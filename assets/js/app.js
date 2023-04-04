@@ -214,9 +214,12 @@ createApp({
                 messageToInsert.message = this.newMessage;
                 this.contacts[this.activeChat].messages.push(messageToInsert);
                 this.newMessage = '';
+                this.scrollBottom();
+
                 setTimeout(this.addResponseMessage, 1000);
                 setTimeout(this.activeStatus, 1000);
                 setTimeout(this.defaultStatus, 3000);
+                
                 this.writingStatus();
             }
         },
@@ -231,6 +234,7 @@ createApp({
                 status: 'received',
             }
             this.contacts[this.activeChat].messages.push(responseMessage);
+            this.scrollBottom();
         },
         /**
          * ## Normalize a String
@@ -293,9 +297,10 @@ createApp({
          * @returns 
          */
         latestMessage(index) {
+            const messagesToRead = this.contacts[index].messages;
             if(this.contacts.length > 0){
-                if(this.contacts[index].messages.length > 0){
-                    return this.contacts[index].messages[this.contacts[index].messages.length - 1].message;
+                if(messagesToRead.length > 0){
+                    return messagesToRead[messagesToRead.length - 1].message;
                 }else{
                     return 'Chat vuota';
                 }
@@ -308,9 +313,10 @@ createApp({
          * @returns 
          */
         latestMessageHour(index) {
+            const messagesToRead = this.contacts[index].messages;
             if(this.contacts.length > 0){
                 if(this.contacts[index].messages.length > 0){
-                    return this.setHour(this.contacts[index].messages[this.contacts[index].messages.length - 1].date)
+                    return this.setHour(messagesToRead[messagesToRead.length - 1].date)
                 }else{
                     return '--:--';
                 }
@@ -340,6 +346,11 @@ createApp({
             if(this.defaultMessages.length > 0){
                 return this.defaultMessages[this.getRandom(0, this.defaultMessages.length-1)];
             }else return 'Ok';
+        },
+        scrollBottom(){
+            const container = document.querySelector('#right-main');
+            const height = container.scrollHeight;
+            container.scrollTop = height;
         }
     },
     mounted() {
