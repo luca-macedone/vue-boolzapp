@@ -21,6 +21,14 @@ input[type="text"]:focus {
     background: linear-gradient(to bottom, var(--bz-back-primary) 10%, var(--bz-back-secondary) 10%) no-repeat;
 }
 
+.ms-bg-back-primary {
+    background-color: var(--bz-back-primary);
+}
+
+.ms-bg-back-secondary {
+    background-color: var(--bz-back-secondary);
+}
+
 .ms-bg-chat {
     background-color: var(--bz-bg-chat);
 }
@@ -31,6 +39,10 @@ input[type="text"]:focus {
 
 .ms-bg-info {
     background-color: var(--bz-info);
+}
+
+.ms-bg-grey-dark {
+    background-color: var(--bz-grey-dark);
 }
 
 .ms-text-grey-dark {
@@ -166,8 +178,7 @@ input[type="text"]:focus {
 }
 
 .user-controls li span:hover,
-.message-menu li span:hover 
-{
+.message-menu li span:hover {
     background-color: transparent;
 }
 
@@ -178,4 +189,50 @@ input[type="text"]:focus {
 
 #deleteChatBtn:hover {
     color: red !important;
+}
+
+#new-chat-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 25;
+    height: 96vh;
+    width: 100%;
+}
+
+#new-chat-wrapper .box {
+    /* min-height: 250px; */
+    width: 80%;
+
+}
+
+#new-chat-wrapper header i {
+    cursor: pointer;
+}
+
+#new-chat-wrapper main button:hover {
+    background-color: var(--bz-back-primary);
+}
+
+/* #new-chat-wrapper main button:hover i {
+    color: black !important;
+} */
+
+
+.profile-pic-default {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bz-back-primary);
+    height: 60px;
+    width: 60px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.profile-pic-default span {
+    font-weight: bold;
+    color: var(--bz-bg-chat);
+    font-size: 1.2rem;
+    text-transform: uppercase;
 }

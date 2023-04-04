@@ -9,6 +9,7 @@ createApp({
             newMessage: '',
             filterValue: '',
             contactStatus: '',
+            newChatWrapper: true,
             notificationPermission: false,
             contacts: [
                 {
@@ -189,6 +190,10 @@ createApp({
                 'I bambini sono l\'unica forma di immortalità della quale possiamo essere sicuri',
             ],
             filteredContacts: [],
+            newContact: {
+                name: '',
+                avatar: null,
+            }
         }
     },
     methods: {
@@ -204,7 +209,7 @@ createApp({
          * ## Add New Message
          * on Trigger, it creates a new message object and adds it inside the array
          */
-        addNewMessage() {
+        async addNewMessage() {
             if (this.newMessage !== '' && this.newMessage !== ' ') {
                 const messageToInsert = {
                     date: this.newMessageHour(),
@@ -214,12 +219,12 @@ createApp({
                 messageToInsert.message = this.newMessage;
                 this.contacts[this.activeChat].messages.push(messageToInsert);
                 this.newMessage = '';
-                this.scrollBottom();
+                // this.scrollBottom();
 
                 setTimeout(this.addResponseMessage, 1000);
                 setTimeout(this.activeStatus, 1000);
                 setTimeout(this.defaultStatus, 3000);
-                
+
                 this.writingStatus();
             }
         },
@@ -227,14 +232,14 @@ createApp({
          * ## Add Response Message
          * its triggered after the activatation of addNewMessage, its creates a message of response to the message submitted frome the client
          */
-        addResponseMessage() {
+        async addResponseMessage() {
             const responseMessage = {
                 date: this.newMessageHour(),
                 message: this.getRandomResponse(),
                 status: 'received',
             }
             this.contacts[this.activeChat].messages.push(responseMessage);
-            this.scrollBottom();
+            // this.scrollBottom();
         },
         /**
          * ## Normalize a String
@@ -263,10 +268,10 @@ createApp({
             this.contacts[this.activeChat].messages.splice(messageToDelete, 1)
             // console.log(this.contacts[this.activeChat].messages)
         },
-        deleteAllMessages(){
+        deleteAllMessages() {
             this.contacts[this.activeChat].messages.splice(0);
         },
-        deleteChat(){
+        deleteChat() {
 
             this.contacts.splice(this.activeChat, 1);
             this.activeChat = -1;
@@ -298,10 +303,10 @@ createApp({
          */
         latestMessage(index) {
             const messagesToRead = this.contacts[index].messages;
-            if(this.contacts.length > 0){
-                if(messagesToRead.length > 0){
+            if (this.contacts.length > 0) {
+                if (messagesToRead.length > 0) {
                     return messagesToRead[messagesToRead.length - 1].message;
-                }else{
+                } else {
                     return 'Chat vuota';
                 }
             }
@@ -314,21 +319,21 @@ createApp({
          */
         latestMessageHour(index) {
             const messagesToRead = this.contacts[index].messages;
-            if(this.contacts.length > 0){
-                if(this.contacts[index].messages.length > 0){
+            if (this.contacts.length > 0) {
+                if (this.contacts[index].messages.length > 0) {
                     return this.setHour(messagesToRead[messagesToRead.length - 1].date)
-                }else{
+                } else {
                     return '--:--';
                 }
             }
         },
-        activeStatus(){
+        activeStatus() {
             this.contactStatus = 'Online';
         },
-        writingStatus(){
+        writingStatus() {
             this.contactStatus = 'Sta Scrivendo...';
         },
-        defaultStatus(){
+        defaultStatus() {
             this.contactStatus = `Ultimo accesso oggi alle ${this.latestMessageHour(this.activeChat)}`;
         },
         /**
@@ -340,21 +345,46 @@ createApp({
         getRandom(min, max) {
             min = Math.ceil(min);
             max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1) + min); 
+            return Math.floor(Math.random() * (max - min + 1) + min);
         },
-        getRandomResponse(){
-            if(this.defaultMessages.length > 0){
-                return this.defaultMessages[this.getRandom(0, this.defaultMessages.length-1)];
-            }else return 'Ok';
+        getRandomResponse() {
+            if (this.defaultMessages.length > 0) {
+                return this.defaultMessages[this.getRandom(0, this.defaultMessages.length - 1)];
+            } else return 'Ok';
         },
-        scrollBottom(){
+        scrollBottom() {
             const container = document.querySelector('#right-main');
-            const height = container.scrollHeight;
-            container.scrollTop = height;
+            container.scrollTop = container.scrollHeight;
+        },
+        addNewContact() {
+            const { name, avatar } = this.newContact;
+            if (name !== '') {
+                const contactToAdd = {
+                    name,
+                    avatar,
+                    visible: true,
+                    messages: [],
+                }
+                this.contacts.unshift(contactToAdd);
+                this.newContact.name = '';
+                this.newContact.avatar = '';
+                this.newChatWrapper = false;
+                this.activeChat = 0;
+            }
+        },
+        defaultPicture(name){
+            const firstChar = name[0];
+            // console.log(firstChar);
+            return firstChar;
         }
     },
     mounted() {
         this.defaultStatus();
+
+    },
+    updated() {
+        this.$nextTick(() => this.scrollBottom());
+        // this.$nextTick(() => this.filterContacts());
     },
     computed: {
         /**
@@ -364,6 +394,7 @@ createApp({
         filterContacts() {
             let filter = this.normalizeString(this.filterValue);
             this.filteredContacts = this.contacts.filter(contact => contact.name.includes(filter));
+
         },
     },
 }).mount('#app')

@@ -24,7 +24,7 @@
 <body class="bg-dual">
     <div class="ms-container bg-light" id="app">
         <div class="ms-row">
-            <div class="ms-col ms-w-40 border-end">
+            <div class="ms-col ms-w-40 border-end position-relative">
                 <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="left-header">
                     <div class="user h-100 d-flex align-items-center gap-2">
                         <!-- TODO set user with obj -->
@@ -38,7 +38,7 @@
                     <div class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
                         <i class="fa-solid fa-circle-notch ms-text-grey-dark"></i>
                         <!-- /status icon -->
-                        <i class="fa-solid fa-message ms-text-grey-dark"></i>
+                        <i class="fa-solid fa-message ms-text-grey-dark" @click="newChatWrapper = !newChatWrapper"></i>
                         <!-- /new message icon -->
                         <i class="fa fa-ellipsis-v ms-text-grey-dark"></i>
                         <!-- /settings icon -->
@@ -46,14 +46,16 @@
                     <!-- /.user-controls -->
                 </header>
                 <!-- /#left-header -->
-                <div class="notifications-check w-100 ms-bg-info d-flex gap-2 align-items-center p-2" :class="notificationPermission? 'd-none':''">
+                <div class="notifications-check w-100 ms-bg-info d-flex gap-2 align-items-center p-2"
+                    :class="notificationPermission? 'd-none':''">
                     <span class="rounded-circle bg-light ms-2">
                         <i class="fa fa-bell-slash fa-w ms-text-info m-3" aria-hidden="true"></i>
                     </span>
                     <!-- /bell icon -->
                     <div class="d-flex flex-column">
                         <span>Ricevi notifiche di nuovi messaggi</span>
-                        <small class="text-decoration-underline text-secondary" @click="notificationPermission = !notificationPermission">Attive notifiche desktop</small>
+                        <small class="text-decoration-underline text-secondary"
+                            @click="notificationPermission = !notificationPermission">Attive notifiche desktop</small>
                     </div>
                     <!-- /notification text -->
                 </div>
@@ -82,9 +84,12 @@
                             class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
                             :class="index === activeChat? 'activeChat':''" v-for="(chat_contact, index) in contacts"
                             @click="changeActiveChat(index)">
-                            <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60"
+                            <img v-if="chat_contact.avatar" class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60"
                                 height="60" alt="">
                             <!-- /.chat-contact-avatar -->
+                            <div v-else class="profile-pic-default">
+                                <span>{{defaultPicture(chat_contact.name)}}</span>
+                            </div>
                             <div class="d-flex flex-column ps-3 w-75">
                                 <span>{{chat_contact.name}}</span>
                                 <small class="ms-text-grey-dark">{{latestMessage(index)}}</small>
@@ -114,13 +119,40 @@
                     <!-- /.chat-list -->
                 </main>
                 <!-- /#left-main -->
+                <div :class="newChatWrapper? '' : 'd-none'"
+                    class="bg-dark bg-opacity-25 d-flex justify-content-center align-items-center"
+                    id="new-chat-wrapper">
+                    <div class="box bg-light">
+                        <header
+                            class="ms-bg-back-primary p-3 text-light d-flex justify-content-between align-items-center">
+                            <i class="fa-solid fa-arrow-left fa-w" @click="newChatWrapper = !newChatWrapper"></i>
+                            <span>
+                                New Chat
+                            </span>
+                        </header>
+                        <main class="p-3">
+                            <label class="form-label" for="new-contact-name">Inserisci un nome</label>
+                            <div class="input-group">
+                                <input class="form-control border-0" type="text" v-model="newContact.name"
+                                    placeholder="Mario" id="new-contact-name" @keyup.enter="addNewContact()">
+                                <button class="btn ms-bg-grey-dark" @click="addNewContact()">
+                                    <i class="fa fa-plus text-light"></i>
+                                </button>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+                <!-- /.newChatWrapper -->
             </div>
             <!-- /.col left-->
             <div class="ms-col ms-w-60 ms-bg-chat">
                 <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
                     <div v-if="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
-                        <img class="img-fluid rounded-circle" :src="`./assets/img/.${contacts[activeChat].avatar}`"
+                        <img v-if="contacts[activeChat].avatar" class="img-fluid rounded-circle" :src="`./assets/img/.${contacts[activeChat].avatar}`"
                             height="60" width="60" alt="">
+                        <div v-else class="profile-pic-default">
+                            <span>{{defaultPicture(contacts[activeChat].name)}}</span>
+                        </div>
                         <!-- /active-chat-avatar -->
                         <div class="d-flex flex-column">
                             <span>{{contacts[activeChat].name}}</span>
@@ -140,12 +172,13 @@
                             <!-- /.dropdown-toggle -->
                             <ul class="dropdown-menu rounded-0 border-0 shadow px-2 py-3">
                                 <li class="ms-text-sm">
-                                    <span class="dropdown-item ms-text-grey-darker" @click="deleteAllMessages()" id="deleteMessagesBtn">Delete Messages</span>
+                                    <span class="dropdown-item ms-text-grey-darker" @click="deleteAllMessages()"
+                                        id="deleteMessagesBtn">Delete Messages</span>
                                 </li>
                                 <!-- /.dropdown-item -->
                                 <li class="ms-text-sm">
-                                    <span class="dropdown-item text-danger"
-                                        @click="deleteChat()" id="deleteChatBtn">Delete Chat</span>
+                                    <span class="dropdown-item text-danger" @click="deleteChat()"
+                                        id="deleteChatBtn">Delete Chat</span>
                                 </li>
                                 <!-- /.dropdown-item -->
                             </ul>
@@ -157,8 +190,8 @@
                 </header>
                 <!-- /#right-header -->
                 <main id="right-main">
-                    <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5">
-                        <li  v-if="activeChat !== -1" class="w-100"
+                    <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5" ref="list">
+                        <li v-if="activeChat !== -1" class="w-100"
                             v-for="(message, index) in contacts[activeChat].messages">
                             <div class=" ms-w-46 rounded p-3 message position-relative"
                                 :class="message.status === 'sent'? 'float-end':'float-start'">
@@ -235,7 +268,7 @@
     <!-- Luxon CDN Lib -->
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
     <!-- Vue CDN Global -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.min.js"></script>
     <!-- My script -->
     <script src="./assets/js/app.js"></script>
 </body>
