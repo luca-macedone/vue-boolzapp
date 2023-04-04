@@ -372,9 +372,19 @@ createApp({
             }
         },
         defaultPicture(name){
-            const firstChar = name[0];
+            const words = name.split(" ");
+            if(words.length === 1){
+                return name[0];
+            }else{
+                let letters = '';
+                words.forEach(word => {
+                    letters += word[0];
+                    //console.log(word[0])
+                });
+                return letters;
+            }
             // console.log(firstChar);
-            return firstChar;
+            //return firstChar;
         }
     },
     mounted() {
