@@ -5,7 +5,7 @@ const DateTime = luxon.DateTime;
 createApp({
     data() {
         return {
-            activeChat: -1,
+            activeChat: 0,
             newMessage: '',
             filterValue: '',
             contactStatus: '',
@@ -217,7 +217,7 @@ createApp({
                     status: 'sent',
                 }
                 messageToInsert.message = this.newMessage;
-                this.contacts[this.activeChat].messages.push(messageToInsert);
+                this.filterContacts[this.activeChat].messages.push(messageToInsert);
                 this.newMessage = '';
                 // this.scrollBottom();
 
@@ -263,7 +263,7 @@ createApp({
         deleteMessage(messageToDelete) {
             // console.log(messageToDelete);
             // console.log(this.contacts[this.activeChat].messages[messageToDelete])
-            this.contacts[this.activeChat].messages.splice(messageToDelete, 1)
+            this.filterContacts[this.activeChat].messages.splice(messageToDelete, 1)
             // console.log(this.contacts[this.activeChat].messages)
         },
         deleteAllMessages() {
@@ -300,7 +300,7 @@ createApp({
          * @returns 
          */
         latestMessage(index) {
-            const messagesToRead = this.filteredContacts[index].messages;
+            const messagesToRead = this.filterContacts[index].messages;
             if (this.filterContacts.length > 0) {
                 if (messagesToRead.length > 0) {
                     return messagesToRead[messagesToRead.length - 1].message;
@@ -317,7 +317,7 @@ createApp({
          */
         latestMessageHour(index) {
             const messagesToRead = this.filterContacts[index].messages;
-            console.log(messagesToRead);
+            //console.log(messagesToRead);
             if (this.filterContacts.length > 0) {
                 if (messagesToRead.length > 0) {
                     return this.setHour(messagesToRead[messagesToRead.length - 1].date)
@@ -364,9 +364,9 @@ createApp({
                     visible: true,
                     messages: [],
                 }
-                this.contacts.unshift(contactToAdd);
+                this.filterContacts.unshift(contactToAdd);
                 this.newContact.name = '';
-                this.newContact.avatar = '';
+                this.newContact.avatar = null;
                 this.newChatWrapper = false;
                 this.activeChat = 0;
             }

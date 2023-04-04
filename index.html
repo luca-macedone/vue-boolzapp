@@ -81,10 +81,10 @@
                 <main :class="notificationPermission? 'forceHeight' : '' " class="bg-white" id="left-main">
                     <ul class="list-group rounded-0 chat-list">
                         <li class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
-                            :class="index === activeChat? 'activeChat':''" v-for="(chat_contact, index) in filteredContacts()"
-                            @click="changeActiveChat(index)">
-                            <img v-if="chat_contact.avatar" class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60"
-                                height="60" alt="">
+                            :class="index === activeChat? 'activeChat':''"
+                            v-for="(chat_contact, index) in filterContacts" @click="changeActiveChat(index)">
+                            <img v-if="chat_contact.avatar" class="rounded-circle"
+                                :src='`./assets/img/.${chat_contact.avatar}`' width="60" height="60" alt="">
                             <!-- /.chat-contact-avatar -->
                             <div v-else class="profile-pic-default">
                                 <span>{{defaultPicture(chat_contact.name)}}</span>
@@ -146,15 +146,15 @@
             <!-- /.col left-->
             <div class="ms-col ms-w-60 ms-bg-chat">
                 <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
-                    <div v-show="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
-                        <img v-if="filteredContacts()[activeChat].avatar" class="img-fluid rounded-circle" :src="`./assets/img/.${filteredContacts()[activeChat].avatar}`"
-                            height="60" width="60" alt="">
+                    <div v-if="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
+                        <img v-if="filterContacts[activeChat].avatar" class="img-fluid rounded-circle"
+                            :src="`./assets/img/.${filterContacts[activeChat].avatar}`" height="60" width="60" alt="">
                         <div v-else class="profile-pic-default">
-                            <span>{{defaultPicture(filteredContacts()[activeChat].name)}}</span>
+                            <span>{{defaultPicture(filterContacts[activeChat].name)}}</span>
                         </div>
                         <!-- /active-chat-avatar -->
                         <div class="d-flex flex-column">
-                            <span>{{filteredContacts()[activeChat].name}}</span>
+                            <span>{{filterContacts[activeChat].name}}</span>
                             <small class="ms-text-grey-dark fw-light">{{contactStatus}}</small>
                         </div>
                         <!-- /active-chat-contact -->
@@ -189,9 +189,8 @@
                 </header>
                 <!-- /#right-header -->
                 <main id="right-main">
-                    <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5" ref="list">
-                        <li v-show="activeChat !== -1" class="w-100"
-                            v-for="(message, index) in filteredContacts()[activeChat].messages">
+                    <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5" v-if="activeChat !== -1">
+                        <li class="w-100" v-for="(message, index) in filterContacts[activeChat].messages">
                             <div class=" ms-w-46 rounded p-3 message position-relative"
                                 :class="message.status === 'sent'? 'float-end':'float-start'">
                                 <div class="dropdown ms-text-sm ms-text-grey-darker message-menu">
@@ -222,8 +221,8 @@
                         <!-- /#active-chat-list-item -->
                     </ul>
                     <!-- /#active-chat -->
-                    <div v-show="activeChat === -1">
-                        <div class="card ms-bg-chat ms-text-grey-dark border-0 w-50 m-auto">
+                    <div v-if="activeChat === -1">
+                        <div class="card mt-5 ms-bg-chat ms-text-grey-dark border-0 w-50 m-auto">
                             <div class="card-body">
                                 <h5 class="card-title">Choose someone to talk with</h5>
                                 <small class="card-text">Search someone on the left panel to talk with</small>
