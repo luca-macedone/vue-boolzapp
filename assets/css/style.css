@@ -149,6 +149,10 @@ input[type="text"]:focus {
     overflow-y: auto;
 }
 
+.chat-user {
+    max-height: 79px;
+}
+
 .message.float-start {
     background-color: white;
 }
@@ -235,4 +239,10 @@ input[type="text"]:focus {
     color: var(--bz-bg-chat);
     font-size: 1.2rem;
     text-transform: uppercase;
+}
+
+.latestMessage {
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 2;
 }

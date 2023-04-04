@@ -5,11 +5,11 @@ const DateTime = luxon.DateTime;
 createApp({
     data() {
         return {
-            activeChat: 0,
+            activeChat: -1,
             newMessage: '',
             filterValue: '',
             contactStatus: '',
-            newChatWrapper: true,
+            newChatWrapper: false,
             notificationPermission: false,
             contacts: [
                 {
@@ -189,7 +189,7 @@ createApp({
                 'Chi è saggio non parla mai di ciò che non può tramutare in azione',
                 'I bambini sono l\'unica forma di immortalità della quale possiamo essere sicuri',
             ],
-            filteredContacts: [],
+            //filteredContacts: [],
             newContact: {
                 name: '',
                 avatar: null,
@@ -248,14 +248,12 @@ createApp({
          * @returns 
          */
         normalizeString(string) {
-            let newString;
             if (string.length > 1) {
-                newString = (string[0].toUpperCase() + string.substring(1).toLowerCase());
+                return (string[0].toUpperCase() + string.substring(1).toLowerCase());
                 // console.log(newString)
             } else {
-                newString = string.toUpperCase();
+                return string.toUpperCase();
             }
-            return newString;
         },
         /**
          * ## Delete a Message
@@ -302,8 +300,8 @@ createApp({
          * @returns 
          */
         latestMessage(index) {
-            const messagesToRead = this.contacts[index].messages;
-            if (this.contacts.length > 0) {
+            const messagesToRead = this.filteredContacts[index].messages;
+            if (this.filterContacts.length > 0) {
                 if (messagesToRead.length > 0) {
                     return messagesToRead[messagesToRead.length - 1].message;
                 } else {
@@ -318,9 +316,10 @@ createApp({
          * @returns 
          */
         latestMessageHour(index) {
-            const messagesToRead = this.contacts[index].messages;
-            if (this.contacts.length > 0) {
-                if (this.contacts[index].messages.length > 0) {
+            const messagesToRead = this.filterContacts[index].messages;
+            console.log(messagesToRead);
+            if (this.filterContacts.length > 0) {
+                if (messagesToRead.length > 0) {
                     return this.setHour(messagesToRead[messagesToRead.length - 1].date)
                 } else {
                     return '--:--';
@@ -393,8 +392,7 @@ createApp({
          */
         filterContacts() {
             let filter = this.normalizeString(this.filterValue);
-            this.filteredContacts = this.contacts.filter(contact => contact.name.includes(filter));
-
+            return this.contacts.filter(contact => contact.name.includes(filter));
         },
     },
 }).mount('#app')

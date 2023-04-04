@@ -80,9 +80,8 @@
                 <!-- /.search-bar -->
                 <main :class="notificationPermission? 'forceHeight' : '' " class="bg-white" id="left-main">
                     <ul class="list-group rounded-0 chat-list">
-                        <li v-if="filteredContacts.length == 0"
-                            class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
-                            :class="index === activeChat? 'activeChat':''" v-for="(chat_contact, index) in contacts"
+                        <li class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
+                            :class="index === activeChat? 'activeChat':''" v-for="(chat_contact, index) in filteredContacts()"
                             @click="changeActiveChat(index)">
                             <img v-if="chat_contact.avatar" class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60"
                                 height="60" alt="">
@@ -92,29 +91,29 @@
                             </div>
                             <div class="d-flex flex-column ps-3 w-75">
                                 <span>{{chat_contact.name}}</span>
-                                <small class="ms-text-grey-dark">{{latestMessage(index)}}</small>
+                                <small class="ms-text-grey-dark latestMessage">{{latestMessage(index)}}</small>
                             </div>
                             <!-- /.latest-message -->
                             <span class="ms-text-sm ms-text-grey-dark">{{latestMessageHour(index)}}</span>
                             <!-- /.latest-message-hour -->
                         </li>
                         <!-- /.chat-user not-filtered -->
-                        <li v-else
+                        <!-- <li v-else
                             class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
                             :class="index === activeChat? 'activeChat':''"
                             v-for="(chat_contact, index) in filteredContacts" @click="changeActiveChat(index)">
                             <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60"
                                 height="60" alt="">
-                            <!-- /.chat-contact-avatar -->
+                            
                             <div class="d-flex flex-column ps-3 w-75">
                                 <span>{{chat_contact.name}}</span>
                                 <small class="ms-text-grey-dark">{{latestMessage(index)}}</small>
                             </div>
-                            <!-- /.latest-message -->
+                            
                             <span class="ms-text-sm ms-text-grey-dark">{{latestMessageHour(index)}}</span>
-                            <!-- /.latest-message-hour -->
+                            
                         </li>
-                        <!-- /.chat-user filtered-->
+                    -->
                     </ul>
                     <!-- /.chat-list -->
                 </main>
@@ -147,15 +146,15 @@
             <!-- /.col left-->
             <div class="ms-col ms-w-60 ms-bg-chat">
                 <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
-                    <div v-if="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
-                        <img v-if="contacts[activeChat].avatar" class="img-fluid rounded-circle" :src="`./assets/img/.${contacts[activeChat].avatar}`"
+                    <div v-show="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
+                        <img v-if="filteredContacts()[activeChat].avatar" class="img-fluid rounded-circle" :src="`./assets/img/.${filteredContacts()[activeChat].avatar}`"
                             height="60" width="60" alt="">
                         <div v-else class="profile-pic-default">
-                            <span>{{defaultPicture(contacts[activeChat].name)}}</span>
+                            <span>{{defaultPicture(filteredContacts()[activeChat].name)}}</span>
                         </div>
                         <!-- /active-chat-avatar -->
                         <div class="d-flex flex-column">
-                            <span>{{contacts[activeChat].name}}</span>
+                            <span>{{filteredContacts()[activeChat].name}}</span>
                             <small class="ms-text-grey-dark fw-light">{{contactStatus}}</small>
                         </div>
                         <!-- /active-chat-contact -->
@@ -191,8 +190,8 @@
                 <!-- /#right-header -->
                 <main id="right-main">
                     <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5" ref="list">
-                        <li v-if="activeChat !== -1" class="w-100"
-                            v-for="(message, index) in contacts[activeChat].messages">
+                        <li v-show="activeChat !== -1" class="w-100"
+                            v-for="(message, index) in filteredContacts()[activeChat].messages">
                             <div class=" ms-w-46 rounded p-3 message position-relative"
                                 :class="message.status === 'sent'? 'float-end':'float-start'">
                                 <div class="dropdown ms-text-sm ms-text-grey-darker message-menu">
@@ -223,7 +222,7 @@
                         <!-- /#active-chat-list-item -->
                     </ul>
                     <!-- /#active-chat -->
-                    <div v-if="activeChat === -1" :class="activeChat !== -1? 'd-none' : 'd-block'">
+                    <div v-show="activeChat === -1">
                         <div class="card ms-bg-chat ms-text-grey-dark border-0 w-50 m-auto">
                             <div class="card-body">
                                 <h5 class="card-title">Choose someone to talk with</h5>
