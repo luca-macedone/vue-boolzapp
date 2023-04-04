@@ -9,6 +9,7 @@ createApp({
             newMessage: '',
             filterValue: '',
             contactStatus: '',
+            notificationPermission: false,
             contacts: [
                 {
                     name: 'Michele',
@@ -180,8 +181,8 @@ createApp({
                 'È molto difficile parlare di responsabilità a meno che tu non l\'abbia esercitata da te stesso',
                 'Un barista è soltanto un farmacista con un inventario limitato',
                 'Un astemio è uno che soffre per la sete invece che godersela',
-                'Non è prendendo in giro la vita che si ottiene la felicità. È solo attraverso la rinunciaspontanea e la rassegnazione alla perdita che ci prepariamo alla morte e che otteniamo un minimo di felicità',
-                'Il poterepolitico o economico o burocratico accresce il potenziale nocivo di una personastupida',
+                'Non è prendendo in giro la vita che si ottiene la felicità. È solo attraverso la rinuncia spontanea e la rassegnazione alla perdita che ci prepariamo alla morte e che otteniamo un minimo di felicità',
+                'Il potere politico o economico o burocratico accresce il potenziale nocivo di una persona stupida',
                 'Un adulto è un bambino che non sa più cosa vuole',
                 'Solo gli spiriti accomodanti non sono mai cinici',
                 'Chi è saggio non parla mai di ciò che non può tramutare in azione',
@@ -258,6 +259,14 @@ createApp({
             this.contacts[this.activeChat].messages.splice(messageToDelete, 1)
             // console.log(this.contacts[this.activeChat].messages)
         },
+        deleteAllMessages(){
+            this.contacts[this.activeChat].messages.splice(0);
+        },
+        deleteChat(){
+
+            this.contacts.splice(this.activeChat, 1);
+            this.activeChat = -1;
+        },
         /**
          * ## Set Hour
          * Given a string with a date, it will return the hour included with a specific format
@@ -284,7 +293,13 @@ createApp({
          * @returns 
          */
         latestMessage(index) {
-            return this.contacts[index].messages[this.contacts[index].messages.length - 1].message;
+            if(this.contacts.length > 0){
+                if(this.contacts[index].messages.length > 0){
+                    return this.contacts[index].messages[this.contacts[index].messages.length - 1].message;
+                }else{
+                    return 'Chat vuota';
+                }
+            }
         },
         /**
          * ## Latest Message Hour
@@ -293,7 +308,13 @@ createApp({
          * @returns 
          */
         latestMessageHour(index) {
-            return this.setHour(this.contacts[index].messages[this.contacts[index].messages.length - 1].date)
+            if(this.contacts.length > 0){
+                if(this.contacts[index].messages.length > 0){
+                    return this.setHour(this.contacts[index].messages[this.contacts[index].messages.length - 1].date)
+                }else{
+                    return '--:--';
+                }
+            }
         },
         activeStatus(){
             this.contactStatus = 'Online';

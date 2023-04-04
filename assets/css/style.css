@@ -99,7 +99,10 @@ input[type="text"]:focus {
 
 #left-main {
     height: calc(96vh - 80px - 80px - 52px);
-    max-height: calc(96vh - 80px - 52px);
+}
+
+.forceHeight {
+    height: calc(96vh - 80px - 52px) !important;
 }
 
 #right-main {
@@ -123,6 +126,10 @@ input[type="text"]:focus {
 
 .notifications-check {
     height: 80px;
+}
+
+.notifications-check small {
+    cursor: pointer;
 }
 
 .chat-list {
@@ -153,6 +160,22 @@ input[type="text"]:focus {
     top: 0;
 }
 
-.message-menu li span:hover {
+.user-controls .dropdown i {
+    font-size: 1.4rem;
+    padding: .25rem;
+}
+
+.user-controls li span:hover,
+.message-menu li span:hover 
+{
     background-color: transparent;
+}
+
+#deleteChatBtn,
+#deleteMessagesBtn {
+    cursor: pointer;
+}
+
+#deleteChatBtn:hover {
+    color: red !important;
 }
