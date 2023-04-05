@@ -1,5 +1,6 @@
 const { createApp } = Vue
 
+import Picker from '../lib/emoji-picker/emoji-picker.js';
 const DateTime = luxon.DateTime;
 
 createApp({
@@ -11,6 +12,8 @@ createApp({
             contactStatus: '',
             newChatWrapper: false,
             notificationPermission: false,
+            showEmoji: false,
+            loading: true,
             contacts: [
                 {
                     name: 'Michele',
@@ -193,7 +196,11 @@ createApp({
             newContact: {
                 name: '',
                 avatar: null,
-            }
+            },
+            clientUser: {
+                name: 'Sofia',
+                avatar: './img/avatar_io.jpg',
+            },
         }
     },
     methods: {
@@ -238,7 +245,7 @@ createApp({
                 message: this.getRandomResponse(),
                 status: 'received',
             }
-            this.contacts[this.activeChat].messages.push(responseMessage);
+            this.filterContacts[this.activeChat].messages.push(responseMessage);
             // this.scrollBottom();
         },
         /**
@@ -281,7 +288,7 @@ createApp({
          * @returns 
          */
         setHour(date) {
-            dateObj = DateTime.fromFormat(date, 'dd/MM/yyyy HH:mm:ss');
+            let dateObj = DateTime.fromFormat(date, 'dd/MM/yyyy HH:mm:ss');
             return dateObj.toLocaleString({ hour: 'numeric', minute: '2-digit' })
         },
         /**
@@ -371,11 +378,11 @@ createApp({
                 this.activeChat = 0;
             }
         },
-        defaultPicture(name){
+        defaultPicture(name) {
             const words = name.split(" ");
-            if(words.length === 1){
+            if (words.length === 1) {
                 return name[0];
-            }else{
+            } else {
                 let letters = '';
                 words.forEach(word => {
                     letters += word[0];
@@ -385,11 +392,28 @@ createApp({
             }
             // console.log(firstChar);
             //return firstChar;
-        }
+        },
+        /*
+        onSelectEmoji(emoji) {
+            console.log(emoji)
+            this.newMessage += emoji.i;
+              // result
+              { 
+                  i: "😚", 
+                  n: ["kissing face"], 
+                  r: "1f61a", // with skin tone
+                  t: "neutral", // skin tone
+                  u: "1f61a" // without tone
+              }
+        },
+        */
+        loadingInterval() {
+            this.loading = !this.loading
+        },
     },
     mounted() {
         this.defaultStatus();
-
+        setTimeout(this.loadingInterval, 1500)
     },
     updated() {
         this.$nextTick(() => this.scrollBottom());
@@ -405,4 +429,4 @@ createApp({
             return this.contacts.filter(contact => contact.name.includes(filter));
         },
     },
-}).mount('#app')
+}).component('Picker', Picker).mount('#app')
