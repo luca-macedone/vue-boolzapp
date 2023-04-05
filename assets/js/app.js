@@ -1,5 +1,6 @@
 const { createApp } = Vue
 
+import Picker from '../lib/emoji-picker/emoji-picker.js';
 const DateTime = luxon.DateTime;
 
 createApp({
@@ -11,6 +12,7 @@ createApp({
             contactStatus: '',
             newChatWrapper: false,
             notificationPermission: false,
+            showEmoji: false,
             contacts: [
                 {
                     name: 'Michele',
@@ -238,7 +240,7 @@ createApp({
                 message: this.getRandomResponse(),
                 status: 'received',
             }
-            this.contacts[this.activeChat].messages.push(responseMessage);
+            this.filterContacts[this.activeChat].messages.push(responseMessage);
             // this.scrollBottom();
         },
         /**
@@ -281,7 +283,7 @@ createApp({
          * @returns 
          */
         setHour(date) {
-            dateObj = DateTime.fromFormat(date, 'dd/MM/yyyy HH:mm:ss');
+            let dateObj = DateTime.fromFormat(date, 'dd/MM/yyyy HH:mm:ss');
             return dateObj.toLocaleString({ hour: 'numeric', minute: '2-digit' })
         },
         /**
@@ -385,7 +387,21 @@ createApp({
             }
             // console.log(firstChar);
             //return firstChar;
-        }
+        },
+        onSelectEmoji(emoji) {
+            console.log(emoji)
+            this.newMessage += emoji.i;
+            /*
+              // result
+              { 
+                  i: "😚", 
+                  n: ["kissing face"], 
+                  r: "1f61a", // with skin tone
+                  t: "neutral", // skin tone
+                  u: "1f61a" // without tone
+              }
+              */
+        },
     },
     mounted() {
         this.defaultStatus();
@@ -405,4 +421,4 @@ createApp({
             return this.contacts.filter(contact => contact.name.includes(filter));
         },
     },
-}).mount('#app')
+}).component('Picker', Picker).mount('#app')

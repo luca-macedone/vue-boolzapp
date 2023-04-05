@@ -1,0 +1,7 @@
+
+
+createApp({
+    methods: {
+        
+    },
+ }).mount('#app');
