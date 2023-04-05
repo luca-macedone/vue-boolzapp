@@ -25,245 +25,263 @@
 </head>
 
 <body class="bg-dual">
-    <div class="ms-container bg-light" id="app">
-        <div class="ms-row">
-            <div class="ms-col ms-w-40 border-end position-relative">
-                <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="left-header">
-                    <div class="user h-100 d-flex align-items-center gap-2">
-                        <!-- TODO set user with obj -->
-                        <img class="img-fluid rounded-circle" src="./assets/img/avatar_io.jpg" height="60" width="60"
-                            alt="">
-                        <!-- /img -->
-                        <span>Sofia</span>
-                        <!-- /name -->
-                    </div>
-                    <!-- /.user -->
-                    <div class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
-                        <i class="fa-solid fa-circle-notch ms-text-grey-dark"></i>
-                        <!-- /status icon -->
-                        <i class="fa-solid fa-message ms-text-grey-dark" @click="newChatWrapper = !newChatWrapper"></i>
-                        <!-- /new message icon -->
-                        <i class="fa fa-ellipsis-v ms-text-grey-dark"></i>
-                        <!-- /settings icon -->
-                    </div>
-                    <!-- /.user-controls -->
-                </header>
-                <!-- /#left-header -->
-                <div class="notifications-check w-100 ms-bg-info d-flex gap-2 align-items-center p-2"
-                    :class="notificationPermission? 'd-none':''">
-                    <span class="rounded-circle bg-light ms-2">
-                        <i class="fa fa-bell-slash fa-w ms-text-info m-3" aria-hidden="true"></i>
-                    </span>
-                    <!-- /bell icon -->
-                    <div class="d-flex flex-column">
-                        <span>Ricevi notifiche di nuovi messaggi</span>
-                        <small class="text-decoration-underline text-secondary"
-                            @click="notificationPermission = !notificationPermission">Attive notifiche desktop</small>
-                    </div>
-                    <!-- /notification text -->
+    <div id="app">
+        <div class="ms-container bg-light">
+            <div class="ms-row position-relative">
+                <div v-if="loading? 'd-none':'' " class="d-flex flex-column justify-content-center align-items-center bg-dark bg-opacity-25 text-light position-absolute loading-screen">
+                    <img src="#" alt="Boolean Logo">
+                    <h1>Loading...</h1>
                 </div>
-                <!-- /.notifications-check -->
-                <div class="search-bar p-2">
-                    <div class="input-group">
-                        <button class="btn border-0 bg-white">
-                            <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
-                        </button>
-                        <!-- /.btn -->
-                        <input class="form-control border-0 ms-text-sm" type="text" id="searchbar"
-                            placeholder="Cerca o inizia una nuova chat" v-model="filterValue">
-                        <!-- /input #searchbar -->
-                        <button :class="filterValue !== ''? '' : 'd-none'" class="btn bg-white text-danger"
-                            @click="filterValue = ''">
-                            <i class="fa-solid fa-x"></i>
-                        </button>
-                        <!-- /.btn clear-text -->
-                    </div>
-                    <!-- /.input-group -->
-                </div>
-                <!-- /.search-bar -->
-                <main :class="notificationPermission? 'forceHeight' : '' " class="bg-white" id="left-main">
-                    <ul class="list-group rounded-0 chat-list">
-                        <li class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
-                            :class="index === activeChat? 'activeChat':''"
-                            v-for="(chat_contact, index) in filterContacts" @click="changeActiveChat(index)">
-                            <img v-if="chat_contact.avatar" class="rounded-circle"
-                                :src='`./assets/img/.${chat_contact.avatar}`' width="60" height="60" alt="">
-                            <!-- /.chat-contact-avatar -->
-                            <div v-else class="profile-pic-default">
-                                <span>{{defaultPicture(chat_contact.name)}}</span>
-                            </div>
-                            <div class="d-flex flex-column ps-3 w-75">
-                                <span>{{chat_contact.name}}</span>
-                                <small class="ms-text-grey-dark latestMessage">{{latestMessage(index)}}</small>
-                            </div>
-                            <!-- /.latest-message -->
-                            <span class="ms-text-sm ms-text-grey-dark">{{latestMessageHour(index)}}</span>
-                            <!-- /.latest-message-hour -->
-                        </li>
-                        <!-- /.chat-user not-filtered -->
-                        <!-- <li v-else
-                            class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
-                            :class="index === activeChat? 'activeChat':''"
-                            v-for="(chat_contact, index) in filteredContacts" @click="changeActiveChat(index)">
-                            <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60"
-                                height="60" alt="">
-                            
-                            <div class="d-flex flex-column ps-3 w-75">
-                                <span>{{chat_contact.name}}</span>
-                                <small class="ms-text-grey-dark">{{latestMessage(index)}}</small>
-                            </div>
-                            
-                            <span class="ms-text-sm ms-text-grey-dark">{{latestMessageHour(index)}}</span>
-                            
-                        </li>
-                    -->
-                    </ul>
-                    <!-- /.chat-list -->
-                </main>
-                <!-- /#left-main -->
-                <div :class="newChatWrapper? '' : 'd-none'"
-                    class="bg-dark bg-opacity-25 d-flex justify-content-center align-items-center"
-                    id="new-chat-wrapper">
-                    <div class="box bg-light">
-                        <header
-                            class="ms-bg-back-primary p-3 text-light d-flex justify-content-between align-items-center">
-                            <i class="fa-solid fa-arrow-left fa-w" @click="newChatWrapper = !newChatWrapper"></i>
-                            <span>
-                                New Chat
-                            </span>
-                        </header>
-                        <main class="p-3">
-                            <label class="form-label" for="new-contact-name">Inserisci un nome</label>
-                            <div class="input-group">
-                                <input class="form-control border-0" type="text" v-model="newContact.name"
-                                    placeholder="Mario" id="new-contact-name" @keyup.enter="addNewContact()">
-                                <button class="btn ms-bg-grey-dark" @click="addNewContact()">
-                                    <i class="fa fa-plus text-light"></i>
-                                </button>
-                            </div>
-                        </main>
-                    </div>
-                </div>
-                <!-- /.newChatWrapper -->
-            </div>
-            <!-- /.col left-->
-            <div class="ms-col ms-w-60 ms-bg-chat">
-                <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
-                    <div v-if="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
-                        <img v-if="filterContacts[activeChat].avatar" class="img-fluid rounded-circle"
-                            :src="`./assets/img/.${filterContacts[activeChat].avatar}`" height="60" width="60" alt="">
-                        <div v-else class="profile-pic-default">
-                            <span>{{defaultPicture(filterContacts[activeChat].name)}}</span>
+                <!-- /.loading screen -->
+                <div class="ms-col ms-w-40 border-end position-relative">
+                    <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="left-header">
+                        <div class="user h-100 d-flex align-items-center gap-2">
+                            <!-- TODO set user with obj -->
+                            <img class="img-fluid rounded-circle" :src="'./assets/img/.'+clientUser.avatar" height="60" width="60"
+                                alt="">
+                            <!-- /img -->
+                            <span>{{clientUser.name}}</span>
+                            <!-- /name -->
                         </div>
-                        <!-- /active-chat-avatar -->
+                        <!-- /.user -->
+                        <div class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
+                            <i class="fa-solid fa-circle-notch ms-text-grey-dark"></i>
+                            <!-- /status icon -->
+                            <i class="fa-solid fa-message ms-text-grey-dark" @click="newChatWrapper = !newChatWrapper"></i>
+                            <!-- /new message icon -->
+                            <div class="dropdown">
+                                <i class="fa fa-ellipsis-v ms-text-grey-dark" data-bs-toggle="dropdown"></i>
+                                <!-- /.dropdown-toggle -->
+                                <ul class="dropdown-menu rounded-0 border-0 shadow px-2 py-3">
+                                    <li class="ms-text-sm">
+                                        <span class="dropdown-item ms-text-grey-darker" @click=""
+                                            id="deleteMessagesBtn">Change theme</span>
+                                    </li>
+                                    <!-- /.dropdown-item -->
+                                </ul>
+                                <!-- /.dropdown-menu -->
+                            </div>
+                            <!-- /.dropdown -->
+                        </div>
+                        <!-- /.user-controls -->
+                    </header>
+                    <!-- /#left-header -->
+                    <div class="notifications-check w-100 ms-bg-info d-flex gap-2 align-items-center p-2"
+                        :class="notificationPermission? 'd-none':''">
+                        <span class="rounded-circle bg-light ms-2">
+                            <i class="fa fa-bell-slash fa-w ms-text-info m-3" aria-hidden="true"></i>
+                        </span>
+                        <!-- /bell icon -->
                         <div class="d-flex flex-column">
-                            <span>{{filterContacts[activeChat].name}}</span>
-                            <small class="ms-text-grey-dark fw-light">{{contactStatus}}</small>
+                            <span>Ricevi notifiche di nuovi messaggi</span>
+                            <small class="text-decoration-underline text-secondary"
+                                @click="notificationPermission = !notificationPermission">Attive notifiche desktop</small>
                         </div>
-                        <!-- /active-chat-contact -->
+                        <!-- /notification text -->
                     </div>
-                    <!-- /.user -->
-                    <div v-if="activeChat !== -1"
-                        class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
-                        <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
-                        <!-- /lens icon -->
-                        <i class="fa-solid fa-paperclip ms-text-grey-dark"></i>
-                        <!-- /paperclip icon -->
-                        <div class="dropdown">
-                            <i class="fa fa-ellipsis-v ms-text-grey-dark" data-bs-toggle="dropdown"></i>
-                            <!-- /.dropdown-toggle -->
-                            <ul class="dropdown-menu rounded-0 border-0 shadow px-2 py-3">
-                                <li class="ms-text-sm">
-                                    <span class="dropdown-item ms-text-grey-darker" @click="deleteAllMessages()"
-                                        id="deleteMessagesBtn">Delete Messages</span>
-                                </li>
-                                <!-- /.dropdown-item -->
-                                <li class="ms-text-sm">
-                                    <span class="dropdown-item text-danger" @click="deleteChat()"
-                                        id="deleteChatBtn">Delete Chat</span>
-                                </li>
-                                <!-- /.dropdown-item -->
-                            </ul>
-                            <!-- /.dropdown-menu -->
+                    <!-- /.notifications-check -->
+                    <div class="search-bar p-2">
+                        <div class="input-group">
+                            <button class="btn border-0 bg-white">
+                                <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
+                            </button>
+                            <!-- /.btn -->
+                            <input class="form-control border-0 ms-text-sm" type="text" id="searchbar"
+                                placeholder="Cerca o inizia una nuova chat" v-model="filterValue">
+                            <!-- /input #searchbar -->
+                            <button :class="filterValue !== ''? '' : 'd-none'" class="btn bg-white text-danger"
+                                @click="filterValue = ''">
+                                <i class="fa-solid fa-x"></i>
+                            </button>
+                            <!-- /.btn clear-text -->
                         </div>
-                        <!-- /.dropdown -->
+                        <!-- /.input-group -->
                     </div>
-                    <!-- /.user-controls -->
-                </header>
-                <!-- /#right-header -->
-                <main id="right-main">
-                    <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5" v-if="activeChat !== -1">
-                        <li class="w-100" v-for="(message, index) in filterContacts[activeChat].messages">
-                            <div class=" ms-w-46 rounded p-3 message position-relative"
-                                :class="message.status === 'sent'? 'float-end':'float-start'">
-                                <div class="dropdown ms-text-sm ms-text-grey-darker message-menu">
-                                    <i class="fa fa-angle-down" data-bs-toggle="dropdown"></i>
-                                    <!-- /.dropdown-toggle -->
-                                    <ul class="dropdown-menu rounded-0 border-0 shadow px-2 py-3">
-                                        <li class="ms-text-sm">
-                                            <span class="dropdown-item ms-text-grey-darker">Message info</span>
-                                        </li>
-                                        <!-- /.dropdown-item -->
-                                        <li class="ms-text-sm">
-                                            <span class="dropdown-item ms-text-grey-darker"
-                                                @click="deleteMessage(index)">Delete message</span>
-                                        </li>
-                                        <!-- /.dropdown-item -->
-                                    </ul>
-                                    <!-- /.dropdown-menu -->
+                    <!-- /.search-bar -->
+                    <main :class="notificationPermission? 'forceHeight' : '' " class="bg-white" id="left-main">
+                        <ul class="list-group rounded-0 chat-list">
+                            <li class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
+                                :class="index === activeChat? 'activeChat':''"
+                                v-for="(chat_contact, index) in filterContacts" @click="changeActiveChat(index)">
+                                <img v-if="chat_contact.avatar" class="rounded-circle"
+                                    :src='`./assets/img/.${chat_contact.avatar}`' width="60" height="60" alt="">
+                                <!-- /.chat-contact-avatar -->
+                                <div v-else class="profile-pic-default">
+                                    <span>{{defaultPicture(chat_contact.name)}}</span>
                                 </div>
-                                <!-- /.dropdown -->
-                                {{message.message}}
-                                <div class="ms-text-sm ms-text-grey-darker hour">
-                                    {{setHour(message.date)}}
+                                <div class="d-flex flex-column ps-3 w-75">
+                                    <span>{{chat_contact.name}}</span>
+                                    <small class="ms-text-grey-dark latestMessage">{{latestMessage(index)}}</small>
                                 </div>
-                                <!-- /.hour -->
-                            </div>
-                            <!-- /.message -->
-                        </li>
-                        <!-- /#active-chat-list-item -->
-                    </ul>
-                    <!-- /#active-chat -->
-                    <div v-if="activeChat === -1">
-                        <div class="card mt-5 ms-bg-chat ms-text-grey-dark border-0 w-50 m-auto">
-                            <div class="card-body">
-                                <h5 class="card-title">Choose someone to talk with</h5>
-                                <small class="card-text">Search someone on the left panel to talk with</small>
-                            </div>
+                                <!-- /.latest-message -->
+                                <span class="ms-text-sm ms-text-grey-dark">{{latestMessageHour(index)}}</span>
+                                <!-- /.latest-message-hour -->
+                            </li>
+                            <!-- /.chat-user not-filtered -->
+                            <!-- <li v-else
+                                class="list-group-item list-group-item-action border-0 border-top rounded-0 d-flex justify-content-between align-items-start chat-user"
+                                :class="index === activeChat? 'activeChat':''"
+                                v-for="(chat_contact, index) in filteredContacts" @click="changeActiveChat(index)">
+                                <img class="rounded-circle" :src='`./assets/img/.${chat_contact.avatar}`' width="60"
+                                    height="60" alt="">
+                                
+                                <div class="d-flex flex-column ps-3 w-75">
+                                    <span>{{chat_contact.name}}</span>
+                                    <small class="ms-text-grey-dark">{{latestMessage(index)}}</small>
+                                </div>
+                                
+                                <span class="ms-text-sm ms-text-grey-dark">{{latestMessageHour(index)}}</span>
+                                
+                            </li>
+                        -->
+                        </ul>
+                        <!-- /.chat-list -->
+                    </main>
+                    <!-- /#left-main -->
+                    <div :class="newChatWrapper? '' : 'd-none'"
+                        class="bg-dark bg-opacity-25 d-flex justify-content-center align-items-center"
+                        id="new-chat-wrapper">
+                        <div class="box bg-light">
+                            <header
+                                class="ms-bg-back-primary p-3 text-light d-flex justify-content-between align-items-center">
+                                <i class="fa-solid fa-arrow-left fa-w" @click="newChatWrapper = !newChatWrapper"></i>
+                                <span>
+                                    New Chat
+                                </span>
+                            </header>
+                            <main class="p-3">
+                                <label class="form-label" for="new-contact-name">Inserisci un nome</label>
+                                <div class="input-group">
+                                    <input class="form-control border-0" type="text" v-model="newContact.name"
+                                        placeholder="Mario" id="new-contact-name" @keyup.enter="addNewContact()">
+                                    <button class="btn ms-bg-grey-dark" @click="addNewContact()">
+                                        <i class="fa fa-plus text-light"></i>
+                                    </button>
+                                </div>
+                            </main>
                         </div>
                     </div>
-                    <!-- /#welcome-message -->
-                </main>
-                <!-- /#right-main -->
-                <footer :class="activeChat !== -1? '': 'd-none'"
-                    class="d-flex justify-content-between align-items-center position-relative" id="right-footer">
-                    <i class="fa-regular fa-smile mx-4 ms-text-grey-darker" @click="showEmoji = !showEmoji"></i>
-                    <Picker @select="onSelectEmoji" class="ms-emoji-picker position-absolute" :class="showEmoji? '': 'd-none'" />
-                    <!-- /emoji icon -->
-                    <div class="input-group" @focusin="isWriting = !isWriting" @focusout="isWriting = !isWriting">
-                        <input :class="newMessage !== ''? '':'rounded'"
-                            class="form-control border-0 ms-text-sm py-3 ms-text-grey-darker" type="text"
-                            placeholder="Scrivi un messaggio" id="message-input" v-model="newMessage"
-                            @keyup.enter="addNewMessage()">
-                        <button :class="newMessage !== ''? '' : 'd-none'" class="btn bg-white text-danger"
-                            @click="newMessage = ''">
-                            <i class="fa-solid fa-x"></i>
+                    <!-- /.newChatWrapper -->
+                </div>
+                <!-- /.col left-->
+                <div class="ms-col ms-w-60 ms-bg-chat">
+                    <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
+                        <div v-if="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
+                            <img v-if="filterContacts[activeChat].avatar" class="img-fluid rounded-circle"
+                                :src="`./assets/img/.${filterContacts[activeChat].avatar}`" height="60" width="60" alt="">
+                            <div v-else class="profile-pic-default">
+                                <span>{{defaultPicture(filterContacts[activeChat].name)}}</span>
+                            </div>
+                            <!-- /active-chat-avatar -->
+                            <div class="d-flex flex-column">
+                                <span>{{filterContacts[activeChat].name}}</span>
+                                <small class="ms-text-grey-dark fw-light">{{contactStatus}}</small>
+                            </div>
+                            <!-- /active-chat-contact -->
+                        </div>
+                        <!-- /.user -->
+                        <div v-if="activeChat !== -1"
+                            class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
+                            <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
+                            <!-- /lens icon -->
+                            <i class="fa-solid fa-paperclip ms-text-grey-dark"></i>
+                            <!-- /paperclip icon -->
+                            <div class="dropdown">
+                                <i class="fa fa-ellipsis-v ms-text-grey-dark" data-bs-toggle="dropdown"></i>
+                                <!-- /.dropdown-toggle -->
+                                <ul class="dropdown-menu rounded-0 border-0 shadow px-2 py-3">
+                                    <li class="ms-text-sm">
+                                        <span class="dropdown-item ms-text-grey-darker" @click="deleteAllMessages()"
+                                            id="deleteMessagesBtn">Delete Messages</span>
+                                    </li>
+                                    <!-- /.dropdown-item -->
+                                    <li class="ms-text-sm">
+                                        <span class="dropdown-item text-danger" @click="deleteChat()"
+                                            id="deleteChatBtn">Delete Chat</span>
+                                    </li>
+                                    <!-- /.dropdown-item -->
+                                </ul>
+                                <!-- /.dropdown-menu -->
+                            </div>
+                            <!-- /.dropdown -->
+                        </div>
+                        <!-- /.user-controls -->
+                    </header>
+                    <!-- /#right-header -->
+                    <main id="right-main">
+                        <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5" v-if="activeChat !== -1">
+                            <li class="w-100" v-for="(message, index) in filterContacts[activeChat].messages">
+                                <div class=" ms-w-46 rounded p-3 message position-relative"
+                                    :class="message.status === 'sent'? 'float-end':'float-start'">
+                                    <div class="dropdown ms-text-sm ms-text-grey-darker message-menu">
+                                        <i class="fa fa-angle-down" data-bs-toggle="dropdown"></i>
+                                        <!-- /.dropdown-toggle -->
+                                        <ul class="dropdown-menu rounded-0 border-0 shadow px-2 py-3">
+                                            <li class="ms-text-sm">
+                                                <span class="dropdown-item ms-text-grey-darker">Message info</span>
+                                            </li>
+                                            <!-- /.dropdown-item -->
+                                            <li class="ms-text-sm">
+                                                <span class="dropdown-item ms-text-grey-darker"
+                                                    @click="deleteMessage(index)">Delete message</span>
+                                            </li>
+                                            <!-- /.dropdown-item -->
+                                        </ul>
+                                        <!-- /.dropdown-menu -->
+                                    </div>
+                                    <!-- /.dropdown -->
+                                    {{message.message}}
+                                    <div class="ms-text-sm ms-text-grey-darker hour">
+                                        {{setHour(message.date)}}
+                                    </div>
+                                    <!-- /.hour -->
+                                </div>
+                                <!-- /.message -->
+                            </li>
+                            <!-- /#active-chat-list-item -->
+                        </ul>
+                        <!-- /#active-chat -->
+                        <div v-if="activeChat === -1">
+                            <div class="card mt-5 ms-bg-chat ms-text-grey-dark border-0 w-50 m-auto">
+                                <div class="card-body">
+                                    <h5 class="card-title">Choose someone to talk with</h5>
+                                    <small class="card-text">Search someone on the left panel to talk with</small>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /#welcome-message -->
+                    </main>
+                    <!-- /#right-main -->
+                    <footer :class="activeChat !== -1? '': 'd-none'"
+                        class="d-flex justify-content-between align-items-center position-relative" id="right-footer">
+                        <i class="fa-regular fa-smile mx-4 ms-text-grey-darker" @click="showEmoji = !showEmoji"></i>
+                        <!-- <Picker @select="onSelectEmoji" class="ms-emoji-picker position-absolute" :class="showEmoji? '': 'd-none'" /> -->
+                        <!-- /emoji icon -->
+                        <div class="input-group" @focusin="isWriting = !isWriting" @focusout="isWriting = !isWriting">
+                            <input :class="newMessage !== ''? '':'rounded'"
+                                class="form-control border-0 ms-text-sm py-3 ms-text-grey-darker" type="text"
+                                placeholder="Scrivi un messaggio" id="message-input" v-model="newMessage"
+                                @keyup.enter="addNewMessage()">
+                            <button :class="newMessage !== ''? '' : 'd-none'" class="btn bg-white text-danger"
+                                @click="newMessage = ''">
+                                <i class="fa-solid fa-x"></i>
+                            </button>
+                        </div>
+                        <!-- /.newMessage input-bar -->
+                        <i :class="newMessage !== ''? 'd-none' : ''" class="fa fa-microphone mx-4 ms-text-grey-darker"></i>
+                        <!-- /mic icon -->
+                        <button :class="newMessage !== ''? '' : 'd-none'" class="btn bg-transparent p-3 rounded-0"
+                            @click="addNewMessage()">
+                            <i class="fa fa-paper-plane mx-1 ms-text-grey-darker"></i>
                         </button>
-                    </div>
-                    <!-- /.newMessage input-bar -->
-                    <i :class="newMessage !== ''? 'd-none' : ''" class="fa fa-microphone mx-4 ms-text-grey-darker"></i>
-                    <!-- /mic icon -->
-                    <button :class="newMessage !== ''? '' : 'd-none'" class="btn bg-transparent p-3 rounded-0"
-                        @click="addNewMessage()">
-                        <i class="fa fa-paper-plane mx-1 ms-text-grey-darker"></i>
-                    </button>
-                    <!-- /.btn paper-plane-icon -->
-                </footer>
-                <!-- /#right-footer -->
+                        <!-- /.btn paper-plane-icon -->
+                    </footer>
+                    <!-- /#right-footer -->
+                </div>
+                <!-- /.col right-->
             </div>
-            <!-- /.col right-->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
     </div>
     <!-- /#app -->
 

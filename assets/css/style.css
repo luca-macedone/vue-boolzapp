@@ -251,3 +251,11 @@ input[type="text"]:focus {
     bottom: 5rem;
     left: 0;
 }
+
+.loading-screen {
+    height: 96vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}

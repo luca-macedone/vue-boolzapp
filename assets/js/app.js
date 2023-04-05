@@ -13,6 +13,7 @@ createApp({
             newChatWrapper: false,
             notificationPermission: false,
             showEmoji: false,
+            loading: true,
             contacts: [
                 {
                     name: 'Michele',
@@ -195,7 +196,11 @@ createApp({
             newContact: {
                 name: '',
                 avatar: null,
-            }
+            },
+            clientUser: {
+                name: 'Sofia',
+                avatar: './img/avatar_io.jpg',
+            },
         }
     },
     methods: {
@@ -373,11 +378,11 @@ createApp({
                 this.activeChat = 0;
             }
         },
-        defaultPicture(name){
+        defaultPicture(name) {
             const words = name.split(" ");
-            if(words.length === 1){
+            if (words.length === 1) {
                 return name[0];
-            }else{
+            } else {
                 let letters = '';
                 words.forEach(word => {
                     letters += word[0];
@@ -388,10 +393,10 @@ createApp({
             // console.log(firstChar);
             //return firstChar;
         },
+        /*
         onSelectEmoji(emoji) {
             console.log(emoji)
             this.newMessage += emoji.i;
-            /*
               // result
               { 
                   i: "😚", 
@@ -400,12 +405,15 @@ createApp({
                   t: "neutral", // skin tone
                   u: "1f61a" // without tone
               }
-              */
+        },
+        */
+        loadingInterval() {
+            this.loading = !this.loading
         },
     },
     mounted() {
         this.defaultStatus();
-
+        setTimeout(this.loadingInterval, 1500)
     },
     updated() {
         this.$nextTick(() => this.scrollBottom());
