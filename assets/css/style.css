@@ -73,19 +73,19 @@ input[type="text"]:focus {
 }
 
 .ms-col {
-    height: 96vh;
+    height: 100vh;
 }
 
 .ms-w-40 {
-    width: 40% !important;
+    width: 100%;
 }
 
 .ms-w-46 {
-    width: 46% !important;
+    width: 80%;
 }
 
 .ms-w-60 {
-    width: 60% !important;
+    width: 100%;
 }
 
 .activeChat {
@@ -93,11 +93,8 @@ input[type="text"]:focus {
 }
 
 #app {
-    height: 96vh;
-    width: 90%;
-    max-width: 1320px;
-    min-width: 768px;
-    margin: 2vh auto;
+    height: 100vh;
+    width: 100vw;
 }
 
 #left-header,
@@ -110,15 +107,15 @@ input[type="text"]:focus {
 }
 
 #left-main {
-    height: calc(96vh - 80px - 80px - 52px);
+    height: calc(100vh - 80px - 80px - 52px);
 }
 
 .forceHeight {
-    height: calc(96vh - 80px - 52px) !important;
+    height: calc(100vh - 80px - 52px) !important;
 }
 
 #right-main {
-    height: calc((96vh - 80px - 80px));
+    height: calc((100vh - 80px - 80px));
     overflow-y: auto;
     background-image: url('./../img/mine.jpg');
 }
@@ -253,9 +250,62 @@ input[type="text"]:focus {
 }
 
 .loading-screen {
-    height: 96vh;
+    height: 100vh;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 100;
+}
+
+@media screen and (min-width: 768px) {
+    #app {
+        height: 96vh;
+        width: 90%;
+        max-width: 1320px;
+        /* min-width: 768px; */
+        margin: 2vh auto;
+    }
+
+    #left-header,
+    #right-header {
+        height: 80px;
+    }
+
+    #right-footer {
+        height: 80px;
+    }
+
+    #left-main {
+        height: calc(96vh - 80px - 80px - 52px);
+    }
+
+    .forceHeight {
+        height: calc(96vh - 80px - 52px) !important;
+    }
+
+    #right-main {
+        height: calc((96vh - 80px - 80px));
+        overflow-y: auto;
+        background-image: url('./../img/mine.jpg');
+    }
+
+    .ms-col {
+        height: 96vh;
+    }
+
+    .ms-w-40 {
+        width: 40% !important;
+    }
+
+    .ms-w-46 {
+        width: 46% !important;
+    }
+
+    .ms-w-60 {
+        width: 60% !important;
+    }
+
+    .loading-screen {
+        height: 96vh;
+    }
 }

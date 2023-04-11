@@ -14,6 +14,7 @@ createApp({
             notificationPermission: false,
             showEmoji: false,
             loading: true,
+            showMobileChat: false,
             contacts: [
                 {
                     name: 'Michele',
@@ -211,12 +212,14 @@ createApp({
          */
         changeActiveChat(position) {
             this.activeChat = position;
+            this.showMobileChat = !this.showMobileChat;
+            this.mobileHandler()
         },
         /**
          * ## Add New Message
          * on Trigger, it creates a new message object and adds it inside the array
          */
-        async addNewMessage() {
+        addNewMessage() {
             if (this.newMessage !== '' && this.newMessage !== ' ') {
                 const messageToInsert = {
                     date: this.newMessageHour(),
@@ -239,7 +242,7 @@ createApp({
          * ## Add Response Message
          * its triggered after the activatation of addNewMessage, its creates a message of response to the message submitted frome the client
          */
-        async addResponseMessage() {
+        addResponseMessage() {
             const responseMessage = {
                 date: this.newMessageHour(),
                 message: this.getRandomResponse(),
@@ -337,10 +340,14 @@ createApp({
             this.contactStatus = 'Online';
         },
         writingStatus() {
-            this.contactStatus = 'Sta Scrivendo...';
+            this.contactStatus = 'Sta Scrivendo';
         },
         defaultStatus() {
-            this.contactStatus = `Ultimo accesso oggi alle ${this.latestMessageHour(this.activeChat)}`;
+            if (window.innerWidth < 768) {
+                this.contactStatus = 'Assente';
+            } else {
+                this.contactStatus = `Ultimo accesso oggi alle ${this.latestMessageHour(this.activeChat)}`;
+            }
         },
         /**
          * 
@@ -410,10 +417,47 @@ createApp({
         loadingInterval() {
             this.loading = !this.loading
         },
+        changeTheme() {
+            console.log('Cambio tema');
+        },
+        mobileHandler() {
+            const leftSection = document.querySelector('#left');
+            const rightSection = document.querySelector('#right');
+            const rightBackArrow = document.querySelector('#back-arrow');
+            //console.log('left', leftSection)
+            //console.log(`right`, rightSection);
+            if (window.innerWidth < 768) {
+                //console.log('sono nel mobile')
+                rightSection.classList.add('d-none');
+                rightBackArrow.classList.remove('d-none');
+                this.defaultStatus();
+                if (this.showMobileChat) {
+                    leftSection.classList.add('d-none')
+                    rightSection.classList.remove('d-none');
+                } else {
+                    leftSection.classList.remove('d-none');
+                    rightSection.classList.add('d-none');
+                }
+            } else {
+                //console.log('sono nel desktop')
+                leftSection.classList.remove('d-none');
+                rightSection.classList.remove('d-none');
+                rightBackArrow.classList.add('d-none');
+                this.defaultStatus();
+            }
+
+        }
+    },
+    created() {
+        window.addEventListener("resize", this.mobileHandler);
     },
     mounted() {
         this.defaultStatus();
-        setTimeout(this.loadingInterval, 1500)
+        setTimeout(this.loadingInterval, 2000);
+        //this.mobileHandler('contacts');
+        if (this.showMobileChat) {
+            this.mobileHandler();
+        }
     },
     updated() {
         this.$nextTick(() => this.scrollBottom());
@@ -428,5 +472,8 @@ createApp({
             let filter = this.normalizeString(this.filterValue);
             return this.contacts.filter(contact => contact.name.includes(filter));
         },
+    },
+    destroyed() {
+        window.removeEventListener("resize", this.mobileHandler);
     },
 }).component('Picker', Picker).mount('#app')

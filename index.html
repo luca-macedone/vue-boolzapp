@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boolzapp | Boolean</title>
+    <title>Boolean | Boolzapp</title>
     <!-- FontAwesome 6.2.0 CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
@@ -17,6 +17,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Emoji Picker CDN -->
     <link rel="stylesheet" href="./assets/lib/emoji-picker/style.css">
     <script src="./assets/lib/emoji-picker/emoji-picker.js" type="module"></script>
@@ -28,34 +30,53 @@
     <div id="app">
         <div class="ms-container bg-light">
             <div class="ms-row position-relative">
-                <div v-if="loading? 'd-none':'' " class="d-flex flex-column justify-content-center align-items-center bg-dark bg-opacity-25 text-light position-absolute loading-screen">
-                    <img src="#" alt="Boolean Logo">
-                    <h1>Loading...</h1>
+                <div v-if="loading? 'd-none':'' "
+                    class="d-flex flex-column justify-content-center align-items-center bg-dark bg-opacity-25 position-absolute loading-screen">
+                    <div
+                        class="animate__animated animate__fadeOut animate__delay-1s loading-box ms-bg-back-primary p-5 shadow d-flex flex-column gap-5">
+                        <img class="" src="./assets/img/boolean-logo.png" height="60" alt="Boolean Logo">
+                        <h1 class="text-light text-center">Loading</h1>
+                    </div>
                 </div>
                 <!-- /.loading screen -->
-                <div class="ms-col ms-w-40 border-end position-relative">
+                <div class="ms-col ms-w-40 border-end position-relative" id="left">
                     <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="left-header">
                         <div class="user h-100 d-flex align-items-center gap-2">
                             <!-- TODO set user with obj -->
-                            <img class="img-fluid rounded-circle" :src="'./assets/img/.'+clientUser.avatar" height="60" width="60"
-                                alt="">
+                            <img class="img-fluid rounded-circle" :src="'./assets/img/.' + clientUser.avatar"
+                                height="60" width="60" alt="">
                             <!-- /img -->
                             <span>{{clientUser.name}}</span>
                             <!-- /name -->
                         </div>
                         <!-- /.user -->
                         <div class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
-                            <i class="fa-solid fa-circle-notch ms-text-grey-dark"></i>
+                            <i class="d-none d-md-inline-flex fa-solid fa-circle-notch ms-text-grey-dark"></i>
                             <!-- /status icon -->
-                            <i class="fa-solid fa-message ms-text-grey-dark" @click="newChatWrapper = !newChatWrapper"></i>
+                            <i class="d-none d-md-inline-flex fa-solid fa-message ms-text-grey-dark"
+                                @click="newChatWrapper = !newChatWrapper"></i>
                             <!-- /new message icon -->
                             <div class="dropdown">
                                 <i class="fa fa-ellipsis-v ms-text-grey-dark" data-bs-toggle="dropdown"></i>
                                 <!-- /.dropdown-toggle -->
                                 <ul class="dropdown-menu rounded-0 border-0 shadow px-2 py-3">
                                     <li class="ms-text-sm">
-                                        <span class="dropdown-item ms-text-grey-darker" @click=""
-                                            id="deleteMessagesBtn">Change theme</span>
+                                        <span class="d-md-none dropdown-item ms-text-grey-darker"
+                                            id="deleteMessagesBtn">
+                                            Status
+                                        </span>
+                                    </li>
+                                    <li class="ms-text-sm">
+                                        <span class="d-md-none dropdown-item ms-text-grey-darker"
+                                            @click="newChatWrapper = !newChatWrapper" id="deleteMessagesBtn">
+                                            New Chat
+                                        </span>
+                                    </li>
+                                    <li class="ms-text-sm">
+                                        <span class="dropdown-item ms-text-grey-darker" @click="changeTheme()"
+                                            id="deleteMessagesBtn">
+                                            Change theme
+                                        </span>
                                     </li>
                                     <!-- /.dropdown-item -->
                                 </ul>
@@ -75,7 +96,8 @@
                         <div class="d-flex flex-column">
                             <span>Ricevi notifiche di nuovi messaggi</span>
                             <small class="text-decoration-underline text-secondary"
-                                @click="notificationPermission = !notificationPermission">Attive notifiche desktop</small>
+                                @click="notificationPermission = !notificationPermission">Attive notifiche
+                                desktop</small>
                         </div>
                         <!-- /notification text -->
                     </div>
@@ -164,11 +186,17 @@
                     <!-- /.newChatWrapper -->
                 </div>
                 <!-- /.col left-->
-                <div class="ms-col ms-w-60 ms-bg-chat">
+                <div class="ms-col ms-w-60 ms-bg-chat" id="right">
                     <header class="d-flex align-items-center p-2 ms-bg-grey-light" id="right-header">
                         <div v-if="activeChat !== -1" class="user h-100 d-flex align-items-center gap-2">
+                            <button class="btn d-none" id="back-arrow"
+                                @click="showMobileChat = !showMobileChat; mobileHandler()">
+                                <i class="fa fa-arrow-left ms-text-grey-dark" aria-hidden="true"></i>
+                            </button>
+                            <!-- /#back-arrow -->
                             <img v-if="filterContacts[activeChat].avatar" class="img-fluid rounded-circle"
-                                :src="`./assets/img/.${filterContacts[activeChat].avatar}`" height="60" width="60" alt="">
+                                :src="`./assets/img/.${filterContacts[activeChat].avatar}`" height="60" width="60"
+                                alt="">
                             <div v-else class="profile-pic-default">
                                 <span>{{defaultPicture(filterContacts[activeChat].name)}}</span>
                             </div>
@@ -182,14 +210,24 @@
                         <!-- /.user -->
                         <div v-if="activeChat !== -1"
                             class="user-controls h-100 d-flex justify-content-end align-items-center gap-3 pe-3">
-                            <i class="fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
+                            <i class="d-none d-md-inline-flex fa-solid fa-magnifying-glass ms-text-grey-dark"></i>
                             <!-- /lens icon -->
-                            <i class="fa-solid fa-paperclip ms-text-grey-dark"></i>
+                            <i class="d-none d-md-inline-flex fa-solid fa-paperclip ms-text-grey-dark"></i>
                             <!-- /paperclip icon -->
                             <div class="dropdown">
                                 <i class="fa fa-ellipsis-v ms-text-grey-dark" data-bs-toggle="dropdown"></i>
                                 <!-- /.dropdown-toggle -->
                                 <ul class="dropdown-menu rounded-0 border-0 shadow px-2 py-3">
+                                    <li class="d-md-none ms-text-sm">
+                                        <span class="dropdown-item ms-text-grey-darker" @click="deleteAllMessages()"
+                                            id="deleteMessagesBtn">Search</span>
+                                    </li>
+                                    <!-- /.dropdown-item -->
+                                    <li class="d-md-none ms-text-sm">
+                                        <span class="dropdown-item ms-text-grey-darker" @click="deleteAllMessages()"
+                                            id="deleteMessagesBtn">Add File</span>
+                                    </li>
+                                    <!-- /.dropdown-item -->
                                     <li class="ms-text-sm">
                                         <span class="dropdown-item ms-text-grey-darker" @click="deleteAllMessages()"
                                             id="deleteMessagesBtn">Delete Messages</span>
@@ -209,7 +247,8 @@
                     </header>
                     <!-- /#right-header -->
                     <main id="right-main">
-                        <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-5" v-if="activeChat !== -1">
+                        <ul class="list-group-flush list-unstyled d-flex flex-column gap-2 p-2 p-md-5"
+                            v-if="activeChat !== -1">
                             <li class="w-100" v-for="(message, index) in filterContacts[activeChat].messages">
                                 <div class=" ms-w-46 rounded p-3 message position-relative"
                                     :class="message.status === 'sent'? 'float-end':'float-start'">
@@ -268,7 +307,8 @@
                             </button>
                         </div>
                         <!-- /.newMessage input-bar -->
-                        <i :class="newMessage !== ''? 'd-none' : ''" class="fa fa-microphone mx-4 ms-text-grey-darker"></i>
+                        <i :class="newMessage !== ''? 'd-none' : ''"
+                            class="fa fa-microphone mx-4 ms-text-grey-darker"></i>
                         <!-- /mic icon -->
                         <button :class="newMessage !== ''? '' : 'd-none'" class="btn bg-transparent p-3 rounded-0"
                             @click="addNewMessage()">
